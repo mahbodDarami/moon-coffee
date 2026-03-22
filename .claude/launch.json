@@ -3,16 +3,15 @@
   "configurations": [
     {
       "name": "Moon Coffee Static",
-      "runtimeExecutable": "npx.cmd",
-      "runtimeArgs": ["serve", ".", "--listen", "3000"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "npx serve . --listen 3000"],
       "port": 3000
     },
     {
       "name": "Moon Coffee Next.js",
-      "runtimeExecutable": "npm.cmd",
-      "runtimeArgs": ["run", "dev", "--", "-p", "3001"],
-      "port": 3001,
-      "cwd": "moon-coffee-next"
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd moon-coffee-next && npm run dev -- -p 3001"],
+      "port": 3001
     }
   ]
 }
