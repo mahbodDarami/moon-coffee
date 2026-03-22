@@ -37,7 +37,8 @@
       "Bash(printf \"n\\\\nn\\\\n\\\\n\\\\n\")",
       "Bash(yes n:*)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start"
     ]
   },
   "hooks": {
