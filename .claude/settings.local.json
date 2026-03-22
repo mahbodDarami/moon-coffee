@@ -40,7 +40,8 @@
       "Bash(npm run:*)",
       "mcp__Claude_Preview__preview_start",
       "Bash(taskkill /PID 21572 /F)",
-      "Bash(cmd //c \"taskkill /PID 21572 /F\")"
+      "Bash(cmd //c \"taskkill /PID 21572 /F\")",
+      "Bash(npx next:*)"
     ]
   },
   "hooks": {
