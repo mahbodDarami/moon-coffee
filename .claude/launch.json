@@ -9,8 +9,8 @@
     },
     {
       "name": "Moon Coffee Next.js",
-      "runtimeExecutable": "cmd",
-      "runtimeArgs": ["/c", "cd moon-coffee-next && npm run dev -- -p 3001"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["moon-coffee-next/node_modules/next/dist/bin/next", "dev", "moon-coffee-next", "-p", "3001"],
       "port": 3001
     }
   ]
