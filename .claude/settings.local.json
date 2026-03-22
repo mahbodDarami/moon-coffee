@@ -41,7 +41,10 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(taskkill /PID 21572 /F)",
       "Bash(cmd //c \"taskkill /PID 21572 /F\")",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(node moon-coffee-next/node_modules/next/dist/bin/next dev moon-coffee-next -p 3002)"
     ]
   },
   "hooks": {

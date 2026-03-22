@@ -4,14 +4,16 @@
     {
       "name": "Moon Coffee Static",
       "runtimeExecutable": "cmd",
-      "runtimeArgs": ["/c", "npx serve . --listen 3000"],
-      "port": 3000
+      "runtimeArgs": ["/c", "npx serve ."],
+      "port": 3000,
+      "autoPort": true
     },
     {
       "name": "Moon Coffee Next.js",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["moon-coffee-next/node_modules/next/dist/bin/next", "dev", "moon-coffee-next", "-p", "3001"],
-      "port": 3001
+      "runtimeArgs": ["moon-coffee-next/node_modules/next/dist/bin/next", "dev", "moon-coffee-next"],
+      "port": 3001,
+      "autoPort": true
     }
   ]
 }
