@@ -10,7 +10,7 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
     gsap.registerPlugin(ScrollTrigger)
 
     const lenis = new Lenis({
-      lerp: 0.075,
+      lerp: 0.1,
       smoothWheel: true,
       syncTouch: false,
     })

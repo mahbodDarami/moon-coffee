@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function Quality() {
   const sectionRef = useRef<HTMLElement>(null)
+  const veilRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLParagraphElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -16,8 +17,24 @@ export default function Quality() {
     gsap.registerPlugin(ScrollTrigger)
 
     const section = sectionRef.current
+    const veil = veilRef.current
     const content = contentRef.current
-    if (!section || !content) return
+    if (!section || !veil || !content) return
+
+    // Veil scrubs away as section scrolls into view
+    const t0 = gsap.fromTo(veil,
+      { opacity: 1 },
+      {
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 90%',
+          end: 'top 15%',
+          scrub: 0.8,
+        },
+      }
+    )
 
     // Whole content block pops up
     const t1 = gsap.from(content, {
@@ -28,7 +45,7 @@ export default function Quality() {
       ease: 'back.out(1.6)',
       scrollTrigger: {
         trigger: section,
-        start: 'top 80%',
+        start: 'top 45%',
         once: true,
       },
     })
@@ -43,12 +60,13 @@ export default function Quality() {
       ease: 'back.out(1.5)',
       scrollTrigger: {
         trigger: content,
-        start: 'top 72%',
+        start: 'top 40%',
         once: true,
       },
     })
 
     return () => {
+      t0.kill()
       t1.kill()
       t2.kill()
     }
@@ -56,6 +74,7 @@ export default function Quality() {
 
   return (
     <section className="quality" id="quality" ref={sectionRef}>
+      <div className="section-veil" ref={veilRef} />
       <div className="quality-bg">
         <video autoPlay muted loop playsInline>
           <source src="/videos/portafilter.mp4" type="video/mp4" />

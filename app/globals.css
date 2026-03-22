@@ -36,7 +36,7 @@
   --nav: 68px;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 
 body {
   font-family: var(--sans);
@@ -64,6 +64,8 @@ a { text-decoration: none; color: inherit; }
   padding: 0 var(--pad);
   gap: 2rem;
   transition: background 0.5s ease, border-color 0.5s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .nav.on-hero { color: #fff; }
@@ -393,6 +395,8 @@ a { text-decoration: none; color: inherit; }
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .story-inner {
@@ -414,6 +418,7 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   overflow: hidden;
   min-height: 100vh;
+  background: var(--roast);
 }
 
 /* Story video — all four edges fade into the dark panel */
@@ -591,4 +596,72 @@ a { text-decoration: none; color: inherit; }
   .story-pillar:nth-child(2) { border-right: none; }
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
   .footer-addr { display: none; }
+}
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--espresso);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: all;
+}
+
+.loading-screen--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-logo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  color: var(--amber);
+}
+
+.loading-dots {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.loading-dots span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  animation: loadDot 1.4s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(2) { animation-delay: 0.22s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.44s; }
+
+@keyframes loadDot {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.75); }
+  40%           { opacity: 1;   transform: scale(1.1); }
+}
+
+/* ============================================
+   SECTION VEIL — scrubbed dark overlay
+   Fades out as each section scrolls into view,
+   then content pops in on top.
+   ============================================ */
+
+.section-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: #080402;
+  pointer-events: none;
+  will-change: opacity;
 }

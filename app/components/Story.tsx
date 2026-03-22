@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function Story() {
   const sectionRef = useRef<HTMLElement>(null)
+  const veilRef = useRef<HTMLDivElement>(null)
   const leftRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const topRef = useRef<HTMLDivElement>(null)
@@ -16,9 +17,25 @@ export default function Story() {
     gsap.registerPlugin(ScrollTrigger)
 
     const section = sectionRef.current
+    const veil = veilRef.current
     const left = leftRef.current
     const right = rightRef.current
-    if (!section || !left || !right) return
+    if (!section || !veil || !left || !right) return
+
+    // Veil scrubs away as section scrolls into view
+    const t0 = gsap.fromTo(veil,
+      { opacity: 1 },
+      {
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 90%',
+          end: 'top 15%',
+          scrub: 0.8,
+        },
+      }
+    )
 
     // Left column slides & pops
     const t1 = gsap.from(left, {
@@ -29,7 +46,7 @@ export default function Story() {
       ease: 'back.out(1.5)',
       scrollTrigger: {
         trigger: section,
-        start: 'top 78%',
+        start: 'top 48%',
         once: true,
       },
     })
@@ -44,7 +61,7 @@ export default function Story() {
       ease: 'back.out(1.4)',
       scrollTrigger: {
         trigger: section,
-        start: 'top 78%',
+        start: 'top 48%',
         once: true,
       },
     })
@@ -59,12 +76,13 @@ export default function Story() {
       ease: 'back.out(1.4)',
       scrollTrigger: {
         trigger: left,
-        start: 'top 70%',
+        start: 'top 42%',
         once: true,
       },
     })
 
     return () => {
+      t0.kill()
       t1.kill()
       t2.kill()
       t3.kill()
@@ -73,6 +91,7 @@ export default function Story() {
 
   return (
     <section className="story" id="story" ref={sectionRef}>
+      <div className="section-veil" ref={veilRef} />
       <div className="story-inner">
         <div className="story-left" ref={leftRef}>
           <div className="story-top js-reveal" ref={topRef}>
