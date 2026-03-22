@@ -29,7 +29,29 @@
       "Bash(gh repo:*)",
       "Bash(/c/Users/mahbo/AppData/Local/GitHubCLI/bin/gh.exe repo:*)",
       "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo create moon-coffee --public --source=. --remote=origin --push)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(jq -e '.hooks.Stop[] | .hooks[] | select\\(.type == \"\"command\"\"\\) | .command' .claude/settings.local.json)",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\.claude\\\\settings.local.json' | ConvertFrom-Json | Select-Object -ExpandProperty hooks\")",
+      "Bash(npx create-next-app@latest moon-coffee-next --typescript --tailwind --app --no-src-dir --eslint --import-alias \"@/*\")",
+      "Bash(printf \"n\\\\nn\\\\n\")",
+      "Bash(printf \"n\\\\nn\\\\n\\\\n\\\\n\")",
+      "Bash(yes n:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2\" && git add -A && git diff --cached --quiet || git commit -m \"auto: save progress $(date +%Y-%m-%dT%H:%M)\" && git push origin master 2>/dev/null || true",
+            "timeout": 30,
+            "statusMessage": "Saving progress to GitHub..."
+          }
+        ]
+      }
     ]
   }
 }
