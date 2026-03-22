@@ -1,1 +1,3 @@
-1_i have to add google map address and user
+1_i have to add google map address and user comments in footbar
+
+2_
