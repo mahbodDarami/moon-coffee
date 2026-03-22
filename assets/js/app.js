@@ -4,7 +4,7 @@
    Replaces the browser's native scroll with a
    silky momentum-based version.                */
 const lenis = new Lenis({
-  lerp:         0.075,   // lower = smoother momentum (0–1)
+  lerp:         0.1,     // lower = smoother momentum (0–1)
   smoothWheel:  true,
   syncTouch:    false,   // keep native touch on mobile
 });
