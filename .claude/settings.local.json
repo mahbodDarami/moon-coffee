@@ -44,7 +44,8 @@
       "Bash(npx next:*)",
       "Bash(netstat -ano)",
       "Bash(findstr \":3000\")",
-      "Bash(node moon-coffee-next/node_modules/next/dist/bin/next dev moon-coffee-next -p 3002)"
+      "Bash(node moon-coffee-next/node_modules/next/dist/bin/next dev moon-coffee-next -p 3002)",
+      "Bash(taskkill /PID 51672 /F)"
     ]
   },
   "hooks": {
