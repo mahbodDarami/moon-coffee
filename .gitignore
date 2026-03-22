@@ -1,0 +1,13 @@
+# Raw source files (very large .mov files)
+raw/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.code-workspace
+
+# Screenshots (optional — remove this line if you want them tracked)
+_screenshots/
