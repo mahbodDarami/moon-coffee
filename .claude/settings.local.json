@@ -47,7 +47,8 @@
       "Bash(node moon-coffee-next/node_modules/next/dist/bin/next dev moon-coffee-next -p 3002)",
       "Bash(taskkill /PID 51672 /F)",
       "Bash(powershell -Command \"\\(Get-Item app/globals.css\\).LastWriteTime = Get-Date\")",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(npx skills:*)"
     ]
   },
   "hooks": {
