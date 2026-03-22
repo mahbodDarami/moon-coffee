@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "Bash(npx @21st-dev/cli@latest install claude)",
+      "Read(//c/Users/mahbo/.claude/**)",
+      "Bash(find ~/.claude -name *.json)",
+      "Bash(xargs grep:*)",
+      "Bash(claude mcp:*)",
+      "WebFetch(domain:21st.dev)",
+      "WebFetch(domain:www.shapedivider.app)",
+      "WebFetch(domain:css-tricks.com)",
+      "WebFetch(domain:codepen.io)",
+      "WebFetch(domain:getwaves.io)",
+      "Bash(ffmpeg -version)",
+      "Bash(winget list:*)",
+      "Bash(where.exe ffmpeg:*)",
+      "Bash(winget install:*)",
+      "Bash(/c/Users/mahbo/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe -i \"vecteezy_coffee-mixing-with-milk-in-a-transparent-plastic-cup-slow_10066005.mov\" -vcodec libx264 -acodec aac -crf 23 -preset fast -movflags +faststart \"coffee-mix.mp4\" -y)",
+      "Bash(/c/Users/mahbo/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe -i \"vecteezy_coffee-coming-through-the-portafilter-of-a-coffee-machine_2016487.mov\" -vcodec libx264 -acodec aac -crf 20 -preset fast -movflags +faststart \"portafilter.mp4\" -y)",
+      "Bash(mkdir -p assets/css assets/js assets/videos raw)",
+      "Bash(mv style.css assets/css/)",
+      "Bash(mv app.js assets/js/)",
+      "Bash(mv \"vecteezy_steaming-hot-coffee-in-white-mug-with-frothy-bubbles-on_74293371.mp4\" assets/videos/hero.mp4)",
+      "Bash(mv portafilter.mp4 assets/videos/portafilter.mp4)",
+      "Bash(gh repo:*)",
+      "Bash(/c/Users/mahbo/AppData/Local/GitHubCLI/bin/gh.exe repo:*)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo create moon-coffee --public --source=. --remote=origin --push)",
+      "Skill(update-config)"
+    ]
+  }
+}
