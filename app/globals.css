@@ -5,8 +5,8 @@
    ============================================ */
 
 @theme inline {
-  --color-espresso: #0c0804;
-  --color-roast:    #100806;
+  --color-espresso: #1a0e0a;
+  --color-roast:    #1a0e0a;
   --color-amber:    #c8a87a;
   --color-amber-lt: #e8c080;
 
@@ -21,8 +21,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --espresso:  #0c0804;
-  --roast:     #100806;
+  --espresso:  #1a0e0a;
+  --roast:     #1a0e0a;
   --amber:     #c8a87a;
   --amber-lt:  #e8c080;
   --cream:     rgba(255,255,255,0.82);
@@ -36,7 +36,7 @@
   --nav: 68px;
 }
 
-html { scroll-behavior: auto; }
+html { scroll-behavior: auto; background: #1a0e0a; }
 
 body {
   font-family: var(--sans);
@@ -45,6 +45,9 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
+
+/* Prevent any white bleed between sections */
+main { background: var(--roast); }
 
 video, img { display: block; width: 100%; height: 100%; object-fit: cover; }
 a { text-decoration: none; color: inherit; }
@@ -106,24 +109,25 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: flex-end;
   overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .hero-bg {
   position: absolute;
   inset: 0;
+  background: var(--roast);
 }
 
-/* Soft vignette — edges dissolve into the dark background */
+/* Vignette — top and bottom fade to roast so the 3px gap blends seamlessly */
 .hero-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  box-shadow:
-    inset 0   0   160px 60px #0c0804,
-    inset 0  80px  80px -20px #0c0804,
-    inset 0 -80px  80px -20px #0c0804;
+  background:
+    linear-gradient(to bottom, var(--roast) 0%, transparent 14%, transparent 72%, var(--roast) 100%),
+    linear-gradient(to right, rgba(26,14,10,0.65) 0%, transparent 50%);
 }
 
 .hero-overlay {
@@ -131,9 +135,9 @@ a { text-decoration: none; color: inherit; }
   inset: 0;
   background: linear-gradient(
     120deg,
-    rgba(8, 4, 2, 0.72) 0%,
-    rgba(8, 4, 2, 0.35) 55%,
-    rgba(8, 4, 2, 0.55) 100%
+    rgba(26, 14, 10, 0.52) 0%,
+    rgba(26, 14, 10, 0.18) 55%,
+    rgba(26, 14, 10, 0.35) 100%
   );
 }
 
@@ -241,22 +245,7 @@ a { text-decoration: none; color: inherit; }
    SECTION TRANSITIONS
    ============================================ */
 
-.section-transition { line-height: 0; overflow: hidden; }
-
-/* Wave A — between hero and quality */
-.st-wave {
-  background: var(--espresso);
-  margin-top: -1px;
-}
-.st-wave svg { display: block; width: 100%; height: clamp(60px, 8vw, 110px); }
-
-/* Slash B — between quality and story — animated by GSAP */
-.st-slash {
-  height: clamp(60px, 8vw, 100px);
-  background: var(--roast);
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
-  margin-top: -1px;
-}
+.section-transition { display: none; }
 
 /* ============================================
    POP-REVEAL — GSAP handles all animation.
@@ -277,42 +266,44 @@ a { text-decoration: none; color: inherit; }
    QUALITY — full video background
    ============================================ */
 
+/* quality section */
 .quality {
   position: relative;
   min-height: 100dvh;
   display: flex;
   align-items: center;
-  background: var(--espresso);
+  background: var(--roast);
   overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .quality-bg {
   position: absolute;
   inset: 0;
+  background: var(--roast);
 }
 
-/* Soft vignette on quality video — all edges melt into background */
+/* Vignette — top and bottom fade to roast so the 3px gap blends seamlessly */
 .quality-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  box-shadow:
-    inset 0   0   180px 70px #0c0804,
-    inset 0  90px  90px -20px #0c0804,
-    inset 0 -90px  90px -20px #0c0804;
+  background:
+    linear-gradient(to bottom, var(--roast) 0%, transparent 14%, transparent 72%, var(--roast) 100%),
+    linear-gradient(to right, rgba(26,14,10,0.65) 0%, transparent 60%);
 }
 
-/* Strong left-side dark gradient so left-aligned text is always readable */
+/* Left-side gradient so text stays readable */
 .quality-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     105deg,
-    rgba(8, 4, 2, 0.88) 0%,
-    rgba(8, 4, 2, 0.65) 45%,
-    rgba(8, 4, 2, 0.15) 100%
+    rgba(26, 14, 10, 0.68) 0%,
+    rgba(26, 14, 10, 0.42) 45%,
+    rgba(26, 14, 10, 0.05) 100%
   );
 }
 
@@ -400,13 +391,15 @@ a { text-decoration: none; color: inherit; }
 }
 
 .story-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   min-height: 100vh;
   width: 100%;
+  background: var(--roast);
+  overflow: hidden;
 }
 
 .story-left {
+  flex: 0 0 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -416,31 +409,47 @@ a { text-decoration: none; color: inherit; }
 
 .story-right {
   position: relative;
+  flex: 1;
   overflow: hidden;
   min-height: 100vh;
   background: var(--roast);
+  /* no transform: translateZ(0) — it creates a compositing layer
+     with a white halo around the edges on Windows Chrome/Edge */
+  margin-left: -1px;
 }
 
-/* Story video — all four edges fade into the dark panel */
+/* Story video — edges melt into the dark panel.
+   Uses box-shadow:inset for soft natural blending (no hard gradient seams).
+   will-change:transform forces its own compositing layer so it renders
+   ABOVE the video's hardware-accelerated layer. */
 .story-right::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1px;
   z-index: 2;
   pointer-events: none;
-  box-shadow:
-    inset 0    0   140px 60px #100806,
-    inset 60px 0    80px -20px #100806,
-    inset 0   70px  70px -20px #100806,
-    inset 0  -70px  70px -20px #100806;
+  background:
+    linear-gradient(to bottom, var(--roast) 0%, transparent 14%, transparent 62%, var(--roast) 100%),
+    linear-gradient(to right, var(--roast) 0%, transparent 40%),
+    linear-gradient(to left, rgba(26,14,10,0.25) 0%, transparent 20%);
 }
 
 .story-video {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
   object-fit: cover;
+  background: var(--roast);
+  display: block;
+  border: none;
+  outline: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.story-video.is-ready {
+  opacity: 1;
 }
 
 .story-top { margin-bottom: 3.5rem; }
@@ -546,8 +555,8 @@ a { text-decoration: none; color: inherit; }
    ============================================ */
 
 .footer {
-  background: var(--espresso);
-  border-top: 1px solid rgba(255,255,255,0.05);
+  background: var(--roast);
+  border-top: none;
   padding: 2.5rem var(--pad);
 }
 
@@ -606,7 +615,7 @@ a { text-decoration: none; color: inherit; }
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: var(--espresso);
+  background: var(--roast);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -661,7 +670,7 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   z-index: 20;
-  background: #080402;
+  background: #1a0e0a;
   pointer-events: none;
   will-change: opacity;
 }

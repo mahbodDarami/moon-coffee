@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -12,6 +12,24 @@ export default function Story() {
   const topRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLQuoteElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [mounted, setMounted] = useState(false)
+
+  // Only mount the video after hydration — prevents the browser from
+  // creating a compositing layer during SSR that shows white edge artifacts
+  useEffect(() => { setMounted(true) }, [])
+
+  // Mark video ready — handles both fresh load and cached (already-loaded) video
+  const markVideoReady = useCallback((el: HTMLVideoElement) => {
+    el.classList.add('is-ready')
+  }, [])
+
+  useEffect(() => {
+    // If video loaded from cache before React hydrated, the event already fired
+    if (videoRef.current && videoRef.current.readyState >= 2) {
+      markVideoReady(videoRef.current)
+    }
+  }, [mounted, markVideoReady])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -22,7 +40,8 @@ export default function Story() {
     const right = rightRef.current
     if (!section || !veil || !left || !right) return
 
-    // Veil scrubs away as section scrolls into view
+    // Veil stays fully opaque while section is below fold,
+    // then scrubs away only once section is well into view
     const t0 = gsap.fromTo(veil,
       { opacity: 1 },
       {
@@ -30,38 +49,38 @@ export default function Story() {
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top 90%',
-          end: 'top 15%',
-          scrub: 0.8,
+          start: 'top 55%',
+          end: 'top -5%',
+          scrub: 1.2,
         },
       }
     )
 
-    // Left column slides & pops
+    // Left column pops up — fires only when section is deeply in view
     const t1 = gsap.from(left, {
-      y: 80,
+      y: 100,
       opacity: 0,
-      scale: 0.95,
-      duration: 1.4,
-      ease: 'back.out(1.5)',
+      duration: 1.5,
+      ease: 'back.out(1.7)',
+      clearProps: 'all',
       scrollTrigger: {
         trigger: section,
-        start: 'top 48%',
+        start: 'top 28%',
         once: true,
       },
     })
 
-    // Right video panel pops, slightly delayed
+    // Right video panel slides in slightly after left — no overshoot to avoid bottom edge flash
     const t2 = gsap.from(right, {
-      y: 80,
+      y: 100,
       opacity: 0,
-      scale: 0.95,
-      duration: 1.4,
-      delay: 0.18,
-      ease: 'back.out(1.4)',
+      duration: 1.5,
+      delay: 0.22,
+      ease: 'power4.out',
+      clearProps: 'all',
       scrollTrigger: {
         trigger: section,
-        start: 'top 48%',
+        start: 'top 28%',
         once: true,
       },
     })
@@ -71,12 +90,12 @@ export default function Story() {
     const t3 = gsap.from(textEls, {
       y: 40,
       opacity: 0,
-      stagger: 0.14,
-      duration: 1.0,
-      ease: 'back.out(1.4)',
+      stagger: 0.16,
+      duration: 1.1,
+      ease: 'back.out(1.5)',
       scrollTrigger: {
         trigger: left,
-        start: 'top 42%',
+        start: 'top 22%',
         once: true,
       },
     })
@@ -134,9 +153,16 @@ export default function Story() {
         </div>
 
         <div className="story-right js-reveal" ref={rightRef}>
-          <video className="story-video" autoPlay muted loop playsInline>
-            <source src="/videos/coffee-mix.mp4" type="video/mp4" />
-          </video>
+          {mounted && (
+            <video
+              ref={videoRef}
+              className="story-video"
+              autoPlay muted loop playsInline
+              onLoadedData={e => markVideoReady(e.currentTarget as HTMLVideoElement)}
+            >
+              <source src="/videos/coffee-mix.mp4" type="video/mp4" />
+            </video>
+          )}
         </div>
       </div>
     </section>

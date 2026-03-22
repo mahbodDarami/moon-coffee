@@ -21,7 +21,8 @@ export default function Quality() {
     const content = contentRef.current
     if (!section || !veil || !content) return
 
-    // Veil scrubs away as section scrolls into view
+    // Veil stays fully opaque while section is below fold,
+    // then scrubs away only once section is well into view
     const t0 = gsap.fromTo(veil,
       { opacity: 1 },
       {
@@ -29,23 +30,23 @@ export default function Quality() {
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top 90%',
-          end: 'top 15%',
-          scrub: 0.8,
+          start: 'top 55%',
+          end: 'top -5%',
+          scrub: 1.2,
         },
       }
     )
 
-    // Whole content block pops up
+    // Whole content block pops up — fires only when section is deeply in view
     const t1 = gsap.from(content, {
-      y: 100,
+      y: 120,
       opacity: 0,
-      scale: 0.93,
-      duration: 1.5,
-      ease: 'back.out(1.6)',
+      scale: 0.92,
+      duration: 1.6,
+      ease: 'back.out(1.8)',
       scrollTrigger: {
         trigger: section,
-        start: 'top 45%',
+        start: 'top 28%',
         once: true,
       },
     })
@@ -55,12 +56,12 @@ export default function Quality() {
     const t2 = gsap.from(textEls, {
       y: 50,
       opacity: 0,
-      stagger: 0.1,
-      duration: 1.1,
-      ease: 'back.out(1.5)',
+      stagger: 0.12,
+      duration: 1.2,
+      ease: 'back.out(1.6)',
       scrollTrigger: {
         trigger: content,
-        start: 'top 40%',
+        start: 'top 22%',
         once: true,
       },
     })
