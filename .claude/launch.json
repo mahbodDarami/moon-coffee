@@ -2,13 +2,6 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Moon Coffee Static",
-      "runtimeExecutable": "cmd",
-      "runtimeArgs": ["/c", "npx serve ."],
-      "port": 3000,
-      "autoPort": true
-    },
-    {
       "name": "Moon Coffee Next.js",
       "runtimeExecutable": "node",
       "runtimeArgs": ["moon-coffee-next/node_modules/next/dist/bin/next", "dev", "moon-coffee-next"],
