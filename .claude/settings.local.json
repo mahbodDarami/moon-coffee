@@ -53,7 +53,8 @@
       "Bash(start:*)",
       "Bash(powershell -Command \":*)",
       "Bash(\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" --headless --screenshot=\"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\_screenshots\\\\loader-preview.png\" --window-size=1280,720 \"file:///C:/Users/mahbo/Videos/college/arian%20coop/3Dweb_2/_screenshots/test-loader.html\")",
-      "Bash(\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" --headless --screenshot=\"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\_screenshots\\\\nav-preview2.png\" --window-size=1440,160 --virtual-time-budget=6000 \"http://localhost:3000\")"
+      "Bash(\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" --headless --screenshot=\"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\_screenshots\\\\nav-preview2.png\" --window-size=1440,160 --virtual-time-budget=6000 \"http://localhost:3000\")",
+      "Bash(\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" --headless --screenshot=\"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\_screenshots\\\\nav-v2.png\" --window-size=1440,180 --virtual-time-budget=6000 \"http://localhost:3000\")"
     ]
   },
   "hooks": {
