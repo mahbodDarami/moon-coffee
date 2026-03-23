@@ -7,22 +7,29 @@ export default function LoadingScreen() {
   const [gone, setGone] = useState(false)
 
   useEffect(() => {
+    // Return visits: skip loader entirely
+    if (sessionStorage.getItem('mc-loaded')) {
+      setGone(true)
+      return
+    }
+
     const dismiss = () => {
+      sessionStorage.setItem('mc-loaded', '1')
       setOut(true)
       setTimeout(() => setGone(true), 900)
     }
 
-    const video = document.querySelector<HTMLVideoElement>('.hero video')
-    if (video) {
-      if (video.readyState >= 3) { dismiss(); return }
-      video.addEventListener('canplay', dismiss, { once: true })
-    }
+    const minDelay = new Promise<void>(res => setTimeout(res, 2500))
 
-    const fallback = setTimeout(dismiss, 4000)
-    return () => {
-      clearTimeout(fallback)
-      video?.removeEventListener('canplay', dismiss)
-    }
+    const videoReady = new Promise<void>(res => {
+      const video = document.querySelector<HTMLVideoElement>('.hero video')
+      if (!video) { res(); return }
+      if (video.readyState >= 3) { res(); return }
+      video.addEventListener('canplay', () => res(), { once: true })
+      setTimeout(res, 4000)
+    })
+
+    Promise.all([minDelay, videoReady]).then(dismiss)
   }, [])
 
   if (gone) return null
@@ -30,8 +37,11 @@ export default function LoadingScreen() {
   return (
     <div className={`loading-screen${out ? ' loading-screen--out' : ''}`}>
       <span className="loading-logo">Moon Coffee</span>
-      <div className="loading-dots">
-        <span /><span /><span />
+      <div className="loading-loader">
+        <div className="loading-cube" />
+        <div className="loading-cube" />
+        <div className="loading-cube" />
+        <div className="loading-cube" />
       </div>
     </div>
   )

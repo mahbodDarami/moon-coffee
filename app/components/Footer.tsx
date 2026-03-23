@@ -32,7 +32,8 @@ export default function Footer() {
   return (
     <footer className="footer" ref={footerRef}>
       <div className="footer-inner" ref={innerRef}>
-        <span className="footer-logo">Moon Coffee</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/logo.png" alt="Moon Coffee" className="footer-logo-img" />
         <span className="footer-addr">
           1847 N. Damen Ave, Chicago &nbsp;&middot;&nbsp; Mon–Fri 6am–7pm &nbsp;&middot;&nbsp; Sat–Sun 7am–8pm
         </span>
