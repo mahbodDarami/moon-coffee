@@ -159,38 +159,66 @@ a { text-decoration: none; color: inherit; }
 .nav-links-group {
   justify-self: center;
   display: flex;
-  gap: clamp(1.5rem, 3vw, 3rem);
+  gap: clamp(0.6rem, 1.5vw, 1.4rem);
 }
 
+/* Center nav links — sliding fill on hover */
 .nav-link {
-  font-size: 0.85rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
-  transition: color 0.2s;
-}
-.nav-link:hover { color: var(--amber-lt); }
-
-/* Right: actions */
-.nav-actions {
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 2vw, 1.8rem);
+  color: var(--amber);
+  background: transparent;
+  border: none;
+  padding: 0.6em 1.2em;
+  position: relative;
+  transition: color 0.5s ease;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.nav-signin {
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
-  transition: color 0.2s;
+/* bottom underline — slides in from left */
+.nav-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--amber-lt);
+  transition: width 0.5s ease;
 }
-.nav-signin:hover { color: #fff; }
 
-.nav-btn-order {
+/* background fill — slides up from bottom */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: var(--amber-lt);
+  transition: height 0.4s ease;
+  z-index: -1;
+}
+
+.nav-link:hover {
+  color: var(--espresso);
+  transition-delay: 0.5s;
+}
+.nav-link:hover::before {
+  width: 100%;
+}
+.nav-link:hover::after {
+  height: 100%;
+  transition-delay: 0.4s;
+}
+
+/* Menu button — same style as old Order Now */
+.nav-link-menu {
+  font-family: var(--sans);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -202,9 +230,109 @@ a { text-decoration: none; color: inherit; }
   transition: background 0.2s, box-shadow 0.2s;
   white-space: nowrap;
 }
-.nav-btn-order:hover {
+.nav-link-menu:hover {
   background: var(--amber-lt);
   box-shadow: 0 0 18px rgba(200,168,122,0.5);
+}
+
+/* Sign In — amber neon glow button */
+.nav-signin {
+  --glow-color:        #c8a87a;
+  --glow-spread-color: rgba(200, 168, 122, 0.45);
+  --btn-color:         #1a0e0a;
+
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--glow-color);
+  background-color: var(--btn-color);
+  border: 0.18em solid var(--glow-color);
+  border-radius: 0.6em;
+  padding: 0.45em 1.1em;
+
+  box-shadow:
+    0 0 0.6em 0.1em var(--glow-color),
+    0 0 2em 0.4em var(--glow-spread-color),
+    inset 0 0 0.5em 0.1em var(--glow-color);
+  text-shadow: 0 0 0.4em var(--glow-color);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.nav-signin:hover {
+  color: var(--btn-color);
+  background-color: var(--glow-color);
+  box-shadow:
+    0 0 0.8em 0.2em var(--glow-color),
+    0 0 3em 0.8em var(--glow-spread-color),
+    inset 0 0 0.5em 0.1em var(--glow-color);
+  text-shadow: none;
+}
+
+.nav-signin:active {
+  box-shadow:
+    0 0 0.4em 0.15em var(--glow-color),
+    0 0 1.5em 0.6em var(--glow-spread-color),
+    inset 0 0 0.35em 0.1em var(--glow-color);
+}
+
+/* Right: actions */
+.nav-actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 1.8rem);
+}
+
+/* .nav-signin styles merged into .nav-link above */
+
+/* Order Now — same style as Sign In */
+.nav-btn-order {
+  --glow-color:        #c8a87a;
+  --glow-spread-color: rgba(200, 168, 122, 0.45);
+  --btn-color:         #1a0e0a;
+
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--glow-color);
+  background-color: var(--btn-color);
+  border: 0.18em solid var(--glow-color);
+  border-radius: 0.6em;
+  padding: 0.45em 1.1em;
+
+  box-shadow:
+    0 0 0.6em 0.1em var(--glow-color),
+    0 0 2em 0.4em var(--glow-spread-color),
+    inset 0 0 0.5em 0.1em var(--glow-color);
+  text-shadow: 0 0 0.4em var(--glow-color);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.nav-btn-order:hover {
+  color: var(--btn-color);
+  background-color: var(--glow-color);
+  box-shadow:
+    0 0 0.8em 0.2em var(--glow-color),
+    0 0 3em 0.8em var(--glow-spread-color),
+    inset 0 0 0.5em 0.1em var(--glow-color);
+  text-shadow: none;
+}
+
+.nav-btn-order:active {
+  box-shadow:
+    0 0 0.4em 0.15em var(--glow-color),
+    0 0 1.5em 0.6em var(--glow-spread-color),
+    inset 0 0 0.35em 0.1em var(--glow-color);
 }
 
 /* ============================================

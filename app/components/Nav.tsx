@@ -37,7 +37,7 @@ export default function Nav() {
         <div className="nav-links-group">
           <a href="#quality" className="nav-link">Our Craft</a>
           <a href="#story"   className="nav-link">Our Story</a>
-          <a href="#menu"    className="nav-link">Menu</a>
+          <a href="#menu"    className="nav-link-menu">Menu</a>
         </div>
 
         {/* Right — actions */}
