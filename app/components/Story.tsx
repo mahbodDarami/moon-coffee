@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import TextGenerateEffect from './ui/TextGenerateEffect'
 
 export default function Story() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -85,20 +86,15 @@ export default function Story() {
       },
     })
 
-    // Inner text blocks stagger in
-    const textEls = [topRef.current, pillarsRef.current, quoteRef.current].filter(Boolean)
-    const t3 = gsap.from(textEls, {
-      y: 40,
-      opacity: 0,
-      stagger: 0.16,
-      duration: 1.1,
-      ease: 'back.out(1.5)',
-      scrollTrigger: {
-        trigger: left,
-        start: 'top 22%',
-        once: true,
-      },
-    })
+    // Pillars + quote stagger in (heading/body handled by TextGenerateEffect)
+    const t3 = gsap.from(
+      [pillarsRef.current, quoteRef.current].filter(Boolean),
+      {
+        y: 40, opacity: 0, stagger: 0.16,
+        duration: 1.1, ease: 'back.out(1.5)',
+        scrollTrigger: { trigger: left, start: 'top 22%', once: true },
+      }
+    )
 
     return () => {
       t0.kill()
@@ -113,17 +109,28 @@ export default function Story() {
       <div className="section-veil" ref={veilRef} />
       <div className="story-inner">
         <div className="story-left" ref={leftRef}>
-          <div className="story-top js-reveal" ref={topRef}>
+          <div className="story-top" ref={topRef}>
             <p className="story-label">Est. 2009</p>
+
+            {/* Heading — word-by-word generate effect */}
             <h2 className="story-heading">
-              Fifteen years of<br /><em>getting it right.</em>
+              <TextGenerateEffect
+                words="Fifteen years of getting it right."
+                duration={0.6}
+                delay={0.1}
+                blur={10}
+              />
             </h2>
-            <p className="story-body">
-              Moon Coffee opened in 2009 with one purpose — to serve exceptional coffee
-              in a space where people could slow down. We source directly from small farms
-              in Ethiopia, Colombia, and Sumatra. Roasted in small batches, weekly.
-              Nothing stale. Nothing rushed. Just great coffee, made with care.
-            </p>
+
+            {/* Body — word-by-word generate effect */}
+            <div className="story-body">
+              <TextGenerateEffect
+                words="Moon Coffee opened in 2009 with one purpose — to serve exceptional coffee in a space where people could slow down. We source directly from small farms in Ethiopia, Colombia, and Sumatra. Roasted in small batches, weekly. Nothing stale. Nothing rushed. Just great coffee, made with care."
+                duration={0.45}
+                delay={0.03}
+                blur={6}
+              />
+            </div>
           </div>
 
           <div className="story-pillars js-reveal" ref={pillarsRef}>

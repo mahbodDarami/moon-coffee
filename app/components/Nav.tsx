@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 
 export default function Nav() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
+  const [scrolled,  setScrolled]  = useState(false)
+  const [menuOpen,  setMenuOpen]  = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.85)
@@ -12,7 +12,6 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Lock body scroll while mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -34,20 +33,20 @@ export default function Nav() {
           </span>
         </a>
 
-        {/* Center — links (desktop) */}
+        {/* Center — links */}
         <div className="nav-links-group">
           <a href="#quality" className="nav-link">Our Craft</a>
           <a href="#story"   className="nav-link">Our Story</a>
           <a href="#menu"    className="nav-link">Menu</a>
         </div>
 
-        {/* Right — actions (desktop) */}
+        {/* Right — actions */}
         <div className="nav-actions">
           <a href="#signin" className="nav-signin">Sign In</a>
           <a href="#order"  className="nav-btn-order">Order Now</a>
         </div>
 
-        {/* Hamburger (mobile only) */}
+        {/* Hamburger */}
         <button
           className={`nav-hamburger${menuOpen ? ' is-open' : ''}`}
           onClick={() => setMenuOpen(v => !v)}
