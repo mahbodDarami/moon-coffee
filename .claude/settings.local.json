@@ -48,7 +48,11 @@
       "Bash(taskkill /PID 51672 /F)",
       "Bash(powershell -Command \"\\(Get-Item app/globals.css\\).LastWriteTime = Get-Date\")",
       "Bash(dir:*)",
-      "Bash(npx skills:*)"
+      "Bash(npx skills:*)",
+      "Bash(node -e \":*)",
+      "Bash(start:*)",
+      "Bash(powershell -Command \":*)",
+      "Bash(\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" --headless --screenshot=\"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\_screenshots\\\\loader-preview.png\" --window-size=1280,720 \"file:///C:/Users/mahbo/Videos/college/arian%20coop/3Dweb_2/_screenshots/test-loader.html\")"
     ]
   },
   "hooks": {
