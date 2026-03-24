@@ -70,7 +70,10 @@
       "WebFetch(domain:wanderlog.com)",
       "WebFetch(domain:www.restaurantji.com)",
       "WebFetch(domain:www.postcard.inc)",
-      "WebFetch(domain:www.novacircle.com)"
+      "WebFetch(domain:www.novacircle.com)",
+      "mcp__magic-21st__21st_magic_component_inspiration",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\.next\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"Cache cleared\")"
     ]
   },
   "hooks": {
