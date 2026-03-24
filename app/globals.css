@@ -68,20 +68,17 @@ a { text-decoration: none; color: inherit; }
   transition: background 0.5s ease, border-color 0.5s ease;
   will-change: transform;
   transform: translateZ(0);
-  /* Always keep compositing layer alive — prevents 1-frame white flash when
-     backdrop-filter would otherwise be created on scroll */
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  background: rgba(26, 14, 10, 0);
 }
 
 .nav.on-hero { color: #fff; }
 
 .nav.scrolled {
-  background: rgba(12, 8, 4, 0.92);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  /* No backdrop-filter — it creates a new GPU compositing layer exactly when
+     .on-hero → .scrolled switches, causing a white flash on Windows Chrome/Edge.
+     Solid dark background achieves the same visual result without the artifact. */
+  background: rgba(12, 8, 4, 0.96);
   border-bottom: 1px solid rgba(200,168,122,0.15);
-  box-shadow: 0 2px 0 0 #0a0604;
 }
 
 /* Left: logo */
