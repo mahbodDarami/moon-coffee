@@ -69,15 +69,17 @@ a { text-decoration: none; color: inherit; }
   will-change: transform;
   transform: translateZ(0);
   background: rgba(26, 14, 10, 0);
+  /* Always 1px border, only color transitions — prevents the 1px layout-shift
+     white flash that occurs when border-bottom jumps from none to 1px on class switch */
+  border-bottom: 1px solid transparent;
 }
 
 .nav.on-hero { color: #fff; }
 
 .nav.scrolled {
-  /* No backdrop-filter — it creates a new GPU compositing layer exactly when
-     .on-hero → .scrolled switches, causing a white flash on Windows Chrome/Edge.
-     Solid dark background achieves the same visual result without the artifact. */
-  background: rgba(12, 8, 4, 0.96);
+  background: rgba(12, 8, 4, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(200,168,122,0.15);
 }
 
