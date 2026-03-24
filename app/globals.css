@@ -68,6 +68,10 @@ a { text-decoration: none; color: inherit; }
   transition: background 0.5s ease, border-color 0.5s ease;
   will-change: transform;
   transform: translateZ(0);
+  /* Always keep compositing layer alive — prevents 1-frame white flash when
+     backdrop-filter would otherwise be created on scroll */
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
 }
 
 .nav.on-hero { color: #fff; }
@@ -77,7 +81,7 @@ a { text-decoration: none; color: inherit; }
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(200,168,122,0.15);
-  box-shadow: 0 2px 0 0 #0a0604; /* seals the 1px white compositing seam at nav bottom edge */
+  box-shadow: 0 2px 0 0 #0a0604;
 }
 
 /* Left: logo */
