@@ -77,6 +77,7 @@ a { text-decoration: none; color: inherit; }
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(200,168,122,0.15);
+  box-shadow: 0 2px 0 0 #0a0604; /* seals the 1px white compositing seam at nav bottom edge */
 }
 
 /* Left: logo */
