@@ -1,10 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { useAuth } from '@/app/components/auth/AuthProvider'
+import MenuOverlay from '@/app/components/menu/MenuOverlay'
+import CartDrawer from '@/app/components/cart/CartDrawer'
+import Link from 'next/link'
 
 export default function Nav() {
-  const [scrolled,  setScrolled]  = useState(false)
-  const [menuOpen,  setMenuOpen]  = useState(false)
+  const { user, isLoading } = useAuth()
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
+  const [cartRefresh, setCartRefresh] = useState(0)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.85)
@@ -13,45 +21,62 @@ export default function Nav() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
+  }, [mobileOpen])
 
-  const close = () => setMenuOpen(false)
+  const closeMobile = () => setMobileOpen(false)
+  const openMenu = useCallback(() => { closeMobile(); setMenuOpen(true) }, [])
+  const openCart = useCallback(() => { closeMobile(); setCartOpen(true) }, [])
+  const handleCartUpdate = useCallback(() => setCartRefresh((n) => n + 1), [])
 
   return (
     <>
       <nav className={`nav ${scrolled ? 'scrolled' : 'on-hero'}`} id="nav">
 
         {/* Left — logo + wordmark */}
-        <a href="#" className="nav-logo" onClick={close}>
+        <Link href="/" className="nav-logo" onClick={closeMobile}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/logo.png" alt="Moon Coffee" className="nav-logo-img" />
           <span className="nav-wordmark">
             <span className="nav-wordmark-moon">Moon</span>
             <span className="nav-wordmark-coffee">Coffee</span>
           </span>
-        </a>
+        </Link>
 
         {/* Center — links */}
         <div className="nav-links-group">
           <a href="#quality" className="nav-link">Our Craft</a>
-          <a href="#story"   className="nav-link">Our Story</a>
-          <a href="#menu"    className="nav-link-menu">Menu</a>
+          <a href="#story" className="nav-link">Our Story</a>
+          <button className="nav-link-menu" onClick={openMenu}>Menu</button>
         </div>
 
         {/* Right — actions */}
         <div className="nav-actions">
-          <a href="#signin" className="nav-signin">Sign In</a>
-          <a href="#order"  className="nav-btn-order">Order Now</a>
+          {!isLoading && (
+            user ? (
+              <>
+                <button className="nav-cart-btn" onClick={openCart} aria-label="Open cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                </button>
+                <Link href="/account" className="nav-signin">Account</Link>
+              </>
+            ) : (
+              <Link href="/login" className="nav-signin">Sign In</Link>
+            )
+          )}
+          <button className="nav-btn-order" onClick={openMenu}>Order Now</button>
         </div>
 
         {/* Hamburger */}
         <button
-          className={`nav-hamburger${menuOpen ? ' is-open' : ''}`}
-          onClick={() => setMenuOpen(v => !v)}
+          className={`nav-hamburger${mobileOpen ? ' is-open' : ''}`}
+          onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
-          aria-expanded={menuOpen}
+          aria-expanded={mobileOpen}
         >
           <span /><span /><span />
         </button>
@@ -59,14 +84,30 @@ export default function Nav() {
       </nav>
 
       {/* Mobile menu overlay */}
-      <div className={`nav-mobile-menu${menuOpen ? ' is-open' : ''}`} aria-hidden={!menuOpen}>
-        <a href="#quality" className="nm-link" onClick={close}>Our Craft</a>
-        <a href="#story"   className="nm-link" onClick={close}>Our Story</a>
-        <a href="#menu"    className="nm-link" onClick={close}>Menu</a>
+      <div className={`nav-mobile-menu${mobileOpen ? ' is-open' : ''}`} aria-hidden={!mobileOpen}>
+        <a href="#quality" className="nm-link" onClick={closeMobile}>Our Craft</a>
+        <a href="#story" className="nm-link" onClick={closeMobile}>Our Story</a>
+        <button className="nm-link" onClick={openMenu}>Menu</button>
         <div className="nm-divider" />
-        <a href="#signin"  className="nm-signin" onClick={close}>Sign In</a>
-        <a href="#order"   className="nm-btn-order" onClick={close}>Order Now</a>
+        {!isLoading && (
+          user ? (
+            <>
+              <button className="nm-link" onClick={openCart}>Cart</button>
+              <Link href="/account" className="nm-signin" onClick={closeMobile}>Account</Link>
+              <Link href="/orders" className="nm-link" onClick={closeMobile}>Orders</Link>
+            </>
+          ) : (
+            <Link href="/login" className="nm-signin" onClick={closeMobile}>Sign In</Link>
+          )
+        )}
+        <button className="nm-btn-order" onClick={openMenu}>Order Now</button>
       </div>
+
+      {/* Menu Overlay */}
+      <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} onCartUpdate={handleCartUpdate} />
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} refreshKey={cartRefresh} />
     </>
   )
 }

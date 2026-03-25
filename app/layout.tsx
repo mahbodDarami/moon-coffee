@@ -5,6 +5,7 @@ import LenisProvider from './components/LenisProvider'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import LoadingScreen from './components/LoadingScreen'
+import { AuthProvider } from './components/auth/AuthProvider'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -34,12 +35,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${outfit.variable}`}>
       <body>
-        <LoadingScreen />
-        <LenisProvider>
-          <Nav />
-          {children}
-          <Footer />
-        </LenisProvider>
+        <AuthProvider>
+          <LoadingScreen />
+          <LenisProvider>
+            <Nav />
+            {children}
+            <Footer />
+          </LenisProvider>
+        </AuthProvider>
       </body>
     </html>
   )
