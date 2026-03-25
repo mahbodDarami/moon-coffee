@@ -87,7 +87,9 @@
       "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__execute_sql",
       "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(Object.keys\\(r.error\\)\\)\")",
       "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(r.error.issues\\)\")",
-      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__list_projects"
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__list_projects",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(del \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\middleware.ts\")"
     ]
   },
   "hooks": {
