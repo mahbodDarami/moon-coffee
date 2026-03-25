@@ -644,7 +644,43 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
   justify-content: center;
   padding: 6rem clamp(2rem, 4vw, 5rem) 6rem clamp(2rem, 6vw, 6rem);
-  background: var(--roast);
+  position: relative;
+  background: url('/images/story-bg.jpg') center / cover no-repeat;
+  /* No border — edges dissolve into --roast via the vignette below */
+  overflow: hidden;
+}
+
+/* All-edge vignette — fades the image into --roast with no hard seams */
+.story-left::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    /* centre darkening for text legibility */
+    radial-gradient(ellipse 90% 85% at 46% 52%,
+      rgba(12,6,2,0.54) 0%,
+      rgba(12,6,2,0.18) 55%,
+      transparent 75%),
+    /* left/right edge fade */
+    linear-gradient(to right,
+      var(--roast) 0%,
+      transparent 22%,
+      transparent 76%,
+      var(--roast) 100%),
+    /* top/bottom edge fade */
+    linear-gradient(to bottom,
+      var(--roast) 0%,
+      transparent 16%,
+      transparent 80%,
+      var(--roast) 100%);
+}
+
+/* All direct children float above the vignette layer */
+.story-left > * {
+  position: relative;
+  z-index: 2;
 }
 
 .story-right {
@@ -727,45 +763,52 @@ a { text-decoration: none; color: inherit; }
 .story-body {
   font-size: 1rem;
   font-weight: 300;
-  color: rgba(255,255,255,0.68);
+  color: rgba(255,255,255,0.72);
   line-height: 1.85;
   max-width: 50ch;
 }
 
 .story-pillars {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  margin-bottom: 3.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.55rem;
+  margin-top: 1.4rem;
 }
 
 .story-pillar {
-  flex: 1;
-  padding: 1.75rem 0 1.75rem 1.5rem;
+  padding: 0.72rem 0.9rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  border-right: 1px solid rgba(255,255,255,0.08);
+  gap: 0.25rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.28s ease, border-color 0.28s ease;
 }
-.story-pillar:first-child { padding-left: 0; }
-.story-pillar:last-child { border-right: none; }
+
+.story-pillar:hover {
+  background: rgba(255,255,255,0.11);
+  border-color: rgba(200,168,122,0.25);
+}
 
 .sp-num {
   font-family: var(--serif);
-  font-weight: 300;
-  font-size: 2.6rem;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 1.8vw, 2rem);
   line-height: 1;
   letter-spacing: -0.02em;
   color: #fff;
+  drop-shadow: 0 1px 8px rgba(0,0,0,0.5);
 }
 
 .sp-label {
-  font-size: 0.62rem;
+  font-size: 0.55rem;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.52);
 }
 
 .story-quote {
@@ -774,7 +817,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 300;
   font-size: clamp(1.15rem, 2vw, 1.5rem);
   line-height: 1.6;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.72);
   padding-left: 1.75rem;
   border-left: 2px solid rgba(200,168,122,0.3);
 }
@@ -1257,14 +1300,14 @@ a { text-decoration: none; color: inherit; }
   position: relative;
 }
 
-/* Coffee bag texture — darkened + desaturated */
+/* Coffee bag texture — moderately darkened, more visible */
 .reviews::before {
   content: '';
   position: absolute;
   inset: 0;
   background: url('https://moonbeancoffee.com/cdn/shop/files/1SC00737_1512x.jpg?v=1744589920') center / cover no-repeat;
-  opacity: 0.52;
-  filter: brightness(0.55) saturate(0.45);
+  opacity: 0.72;
+  filter: brightness(0.62) saturate(0.5);
   z-index: 0;
   pointer-events: none;
 }
@@ -1533,13 +1576,13 @@ a { text-decoration: none; color: inherit; }
 
 .reviews-info-address span {
   font-family: var(--sans);
-  font-size: 0.8rem;
-  font-weight: 300;
+  font-size: 0.82rem;
+  font-weight: 400;
   line-height: 1.85;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.85);
 }
 
-.reviews-info-address span:first-child { color: rgba(255,255,255,0.92); font-weight: 400; }
+.reviews-info-address span:first-child { color: rgba(255,255,255,0.98); font-weight: 500; }
 
 .reviews-info-divider {
   height: 1px;
@@ -1569,14 +1612,14 @@ a { text-decoration: none; color: inherit; }
 
 .reviews-info-hours-day {
   font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 300;
-  color: rgba(255,255,255,0.68);
+  font-size: 0.74rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.82);
 }
 
 .reviews-info-hours-time {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
 }
@@ -1683,7 +1726,8 @@ a { text-decoration: none; color: inherit; }
   .quality-body  { font-size: 1.1rem; max-width: 54ch; }
 
   .story-body    { font-size: 1.1rem; }
-  .sp-num        { font-size: 3.2rem; }
+  .sp-num        { font-size: clamp(1.6rem, 1.5vw, 2.2rem); }
+  .story-pillars { grid-template-columns: repeat(4, 1fr); }
 
   /* Reviews — bigger cards on wide screens */
   .reviews-card-wrap    { width: 310px; height: 310px; }
@@ -1718,9 +1762,8 @@ a { text-decoration: none; color: inherit; }
   .nav-link        { font-size: 0.78rem; }
   .nav-btn-order   { font-size: 0.75rem; padding: 0.55rem 1.1rem; }
 
-  .story-left {
-    padding: 5rem clamp(1.5rem, 3vw, 3rem) 5rem clamp(1.5rem, 4vw, 4rem);
-  }
+  .story-left        { padding: 5rem clamp(1.5rem, 3vw, 3rem) 5rem clamp(1.5rem, 4vw, 4rem); }
+  .story-pillars     { grid-template-columns: repeat(2, 1fr); }
 
   /* Reviews — tighten gap on tablet */
   .reviews-inner       { gap: 3rem; }
@@ -1769,6 +1812,7 @@ a { text-decoration: none; color: inherit; }
     object-fit: cover;
   }
   .story-left        { flex: none; width: 100%; padding: 4rem var(--pad); }
+  .story-pillars     { grid-template-columns: repeat(4, 1fr); }
   .story-body        { max-width: 100%; }
 
   /* Footer — collapse to 2-col */
@@ -1820,12 +1864,8 @@ a { text-decoration: none; color: inherit; }
   .story-right       { min-height: 62vw; }
   .story-left        { padding: 3rem var(--pad) 3.5rem; }
   .story-body        { font-size: 0.92rem; line-height: 1.75; }
-  .story-pillars     { flex-wrap: wrap; }
-  .story-pillar      { flex: 1 1 45%; }
-  .story-pillar:nth-child(2) { border-right: none; }
-  .sp-num            { font-size: 2.2rem; }
-  .sp-label          { font-size: 0.6rem; }
-  .story-quote       { font-size: 1rem; padding-left: 1.2rem; }
+  .story-pillars     { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
+  .story-quote       { font-size: 0.9rem; padding-left: 1.2rem; }
 
   /* Footer — single column on mobile */
   .footer-main        { grid-template-columns: 1fr; gap: 2rem; padding: 3rem var(--pad) 2.5rem; }
@@ -1847,7 +1887,7 @@ a { text-decoration: none; color: inherit; }
   .hero-sub          { font-size: 0.84rem; }
 
   .story-right       { min-height: 70vw; }
-  .story-pillar      { flex: 1 1 100%; border-right: none !important; }
+  .story-pillars     { grid-template-columns: repeat(2, 1fr); }
 
   .loading-logo      { font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 0.12em; }
 }
