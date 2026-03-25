@@ -75,7 +75,18 @@
       "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\.next\" -ErrorAction SilentlyContinue)",
       "Bash(Write-Host \"Cache cleared\")",
       "Bash(find C:/Users/mahbo/AppData/Local/Temp/claude/ -name *.jpg -o -name *.png -o -name *.jpeg -o -name *.webp)",
-      "Bash(python3 -c \"import sys,json; data=sys.stdin.read\\(\\); msgs=[json.loads\\(l\\) for l in data.strip\\(\\).split\\(''''\\\\n''''\\) if l]; print\\(json.dumps\\(msgs[-1] if msgs else {}, indent=2\\)[:2000]\\)\")"
+      "Bash(python3 -c \"import sys,json; data=sys.stdin.read\\(\\); msgs=[json.loads\\(l\\) for l in data.strip\\(\\).split\\(''''\\\\n''''\\) if l]; print\\(json.dumps\\(msgs[-1] if msgs else {}, indent=2\\)[:2000]\\)\")",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__list_organizations",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__get_cost",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__confirm_cost",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__create_project",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__get_publishable_keys",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__get_project_url",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__apply_migration",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__generate_typescript_types",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__execute_sql",
+      "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(Object.keys\\(r.error\\)\\)\")",
+      "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(r.error.issues\\)\")"
     ]
   },
   "hooks": {
