@@ -2901,3 +2901,13 @@ a { text-decoration: none; color: inherit; }
 .nav-cart-btn:hover {
   color: var(--amber);
 }
+
+/* ── Auth pages — input placeholder color ── */
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+/* Spin keyframe for sign-in loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, Outfit } from 'next/font/google'
 import './globals.css'
 import LenisProvider from './components/LenisProvider'
-import Nav from './components/Nav'
-import Footer from './components/Footer'
 import LoadingScreen from './components/LoadingScreen'
 import { AuthProvider } from './components/auth/AuthProvider'
+import { MainLayout } from './components/MainLayout'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -38,9 +37,9 @@ export default function RootLayout({
         <AuthProvider>
           <LoadingScreen />
           <LenisProvider>
-            <Nav />
-            {children}
-            <Footer />
+            <MainLayout>
+              {children}
+            </MainLayout>
           </LenisProvider>
         </AuthProvider>
       </body>
