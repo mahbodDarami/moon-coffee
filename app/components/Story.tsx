@@ -37,34 +37,38 @@ export default function Story() {
     const right   = rightRef.current
     if (!section || !veil || !left || !right) return
 
-    const t0 = gsap.fromTo(veil,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top 55%', end: 'top -5%', scrub: 1.2 },
-      }
-    )
+    const ctx = gsap.context(() => {
+      gsap.fromTo(veil,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 55%', end: 'top -5%', scrub: 1.2 },
+        }
+      )
 
-    const t1 = gsap.from(left, {
-      y: 100, opacity: 0, duration: 1.5, ease: 'back.out(1.7)', clearProps: 'all',
-      scrollTrigger: { trigger: section, start: 'top 28%', once: true },
-    })
+      gsap.from(left, {
+        y: 100, opacity: 0, duration: 1.5, ease: 'back.out(1.7)', clearProps: 'all',
+        scrollTrigger: { trigger: section, start: 'top 28%', once: true },
+      })
 
-    const t2 = gsap.from(right, {
-      y: 100, opacity: 0, duration: 1.5, delay: 0.22, ease: 'power4.out', clearProps: 'all',
-      scrollTrigger: { trigger: section, start: 'top 28%', once: true },
-    })
+      gsap.from(right, {
+        y: 100, opacity: 0, duration: 1.5, delay: 0.22, ease: 'power4.out', clearProps: 'all',
+        scrollTrigger: { trigger: section, start: 'top 28%', once: true },
+      })
 
-    const t3 = gsap.from(
-      [pillarsRef.current, quoteRef.current].filter(Boolean),
-      {
-        y: 40, opacity: 0, stagger: 0.16, duration: 1.1, ease: 'back.out(1.5)',
-        scrollTrigger: { trigger: left, start: 'top 22%', once: true },
-      }
-    )
+      gsap.from(
+        [pillarsRef.current, quoteRef.current].filter(Boolean),
+        {
+          y: 40, opacity: 0, stagger: 0.16, duration: 1.1, ease: 'back.out(1.5)',
+          scrollTrigger: { trigger: left, start: 'top 22%', once: true },
+        }
+      )
+    }, sectionRef)
 
-    return () => { t0.kill(); t1.kill(); t2.kill(); t3.kill() }
+    ScrollTrigger.refresh()
+
+    return () => ctx.revert()
   }, [])
 
   return (

@@ -95,25 +95,29 @@ export default function ReviewsAndMap() {
     const info    = infoRef.current
     if (!section || !header || !cards || !info) return
 
-    const cardEls = cards.querySelectorAll<HTMLElement>('.reviews-card-wrap')
+    const ctx = gsap.context(() => {
+      const cardEls = cards.querySelectorAll<HTMLElement>('.reviews-card-wrap')
 
-    const t1 = gsap.from(header, {
-      y: 40, opacity: 0, duration: 1.1, ease: 'power3.out',
-      scrollTrigger: { trigger: section, start: 'top 72%', once: true },
-    })
+      gsap.from(header, {
+        y: 40, opacity: 0, duration: 1.1, ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 72%', once: true },
+      })
 
-    const t2 = gsap.from(cardEls, {
-      y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
-      stagger: 0.13,
-      scrollTrigger: { trigger: cards, start: 'top 80%', once: true },
-    })
+      gsap.from(cardEls, {
+        y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+        stagger: 0.13,
+        scrollTrigger: { trigger: cards, start: 'top 80%', once: true },
+      })
 
-    const t3 = gsap.from(info, {
-      x: 40, opacity: 0, duration: 1.0, ease: 'power2.out',
-      scrollTrigger: { trigger: info, start: 'top 82%', once: true },
-    })
+      gsap.from(info, {
+        x: 40, opacity: 0, duration: 1.0, ease: 'power2.out',
+        scrollTrigger: { trigger: info, start: 'top 82%', once: true },
+      })
+    }, sectionRef)
 
-    return () => { t1.kill(); t2.kill(); t3.kill() }
+    ScrollTrigger.refresh()
+
+    return () => ctx.revert()
   }, [])
 
   return (

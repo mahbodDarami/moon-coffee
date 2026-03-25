@@ -20,34 +20,38 @@ export default function Quality() {
     const content = contentRef.current
     if (!section || !veil || !content) return
 
-    // Veil scrubs away as section enters view
-    const t0 = gsap.fromTo(veil,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top 55%', end: 'top -5%', scrub: 1.2 },
-      }
-    )
+    const ctx = gsap.context(() => {
+      // Veil scrubs away as section enters view
+      gsap.fromTo(veil,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 55%', end: 'top -5%', scrub: 1.2 },
+        }
+      )
 
-    // Whole content block pops up
-    const t1 = gsap.from(content, {
-      y: 120, opacity: 0, scale: 0.92,
-      duration: 1.6, ease: 'back.out(1.8)',
-      scrollTrigger: { trigger: section, start: 'top 28%', once: true },
-    })
+      // Whole content block pops up
+      gsap.from(content, {
+        y: 120, opacity: 0, scale: 0.92,
+        duration: 1.6, ease: 'back.out(1.8)',
+        scrollTrigger: { trigger: section, start: 'top 28%', once: true },
+      })
 
-    // Label + marks stagger (heading/body handled by TextGenerateEffect)
-    const t2 = gsap.from(
-      [labelRef.current, marksRef.current].filter(Boolean),
-      {
-        y: 40, opacity: 0, stagger: 0.14,
-        duration: 1.1, ease: 'back.out(1.6)',
-        scrollTrigger: { trigger: content, start: 'top 22%', once: true },
-      }
-    )
+      // Label + marks stagger (heading/body handled by TextGenerateEffect)
+      gsap.from(
+        [labelRef.current, marksRef.current].filter(Boolean),
+        {
+          y: 40, opacity: 0, stagger: 0.14,
+          duration: 1.1, ease: 'back.out(1.6)',
+          scrollTrigger: { trigger: content, start: 'top 22%', once: true },
+        }
+      )
+    }, sectionRef)
 
-    return () => { t0.kill(); t1.kill(); t2.kill() }
+    ScrollTrigger.refresh()
+
+    return () => ctx.revert()
   }, [])
 
   return (
