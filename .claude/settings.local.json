@@ -73,7 +73,9 @@
       "WebFetch(domain:www.novacircle.com)",
       "mcp__magic-21st__21st_magic_component_inspiration",
       "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\.next\" -ErrorAction SilentlyContinue)",
-      "Bash(Write-Host \"Cache cleared\")"
+      "Bash(Write-Host \"Cache cleared\")",
+      "Bash(find C:/Users/mahbo/AppData/Local/Temp/claude/ -name *.jpg -o -name *.png -o -name *.jpeg -o -name *.webp)",
+      "Bash(python3 -c \"import sys,json; data=sys.stdin.read\\(\\); msgs=[json.loads\\(l\\) for l in data.strip\\(\\).split\\(''''\\\\n''''\\) if l]; print\\(json.dumps\\(msgs[-1] if msgs else {}, indent=2\\)[:2000]\\)\")"
     ]
   },
   "hooks": {
