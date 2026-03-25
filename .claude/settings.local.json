@@ -86,7 +86,8 @@
       "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__generate_typescript_types",
       "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__execute_sql",
       "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(Object.keys\\(r.error\\)\\)\")",
-      "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(r.error.issues\\)\")"
+      "Bash(node -e \"const z = require\\(''zod''\\); const r = z.string\\(\\).email\\(\\).safeParse\\(''bad''\\); console.log\\(r.error.issues\\)\")",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__list_projects"
     ]
   },
   "hooks": {
