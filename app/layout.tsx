@@ -7,6 +7,7 @@ import LoadingScreen from './components/LoadingScreen'
 import { AuthProvider } from './components/auth/AuthProvider'
 import { MainLayout } from './components/MainLayout'
 import { WelcomeBanner } from './components/WelcomeBanner'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -47,6 +48,7 @@ export default function RootLayout({
             </MainLayout>
           </LenisProvider>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
