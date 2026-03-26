@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Image from 'next/image'
 
 const MARQUEE_TEXT =
   'SPECIALTY COFFEE · KENSINGTON MARKET · SINCE 1998 · TORONTO ON · MOONBEAN · '
@@ -74,8 +75,6 @@ export default function Footer() {
   const bottomRef  = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
     const footer = footerRef.current
     const cols   = colsRef.current
     const bottom = bottomRef.current
@@ -83,33 +82,37 @@ export default function Footer() {
 
     const colEls = cols.querySelectorAll<HTMLElement>('.footer-col')
 
-    const t1 = gsap.from(colEls, {
-      y: 36,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: footer,
-        start: 'top 88%',
-        once: true,
-      },
-    })
+    const ctx = gsap.context(() => {
+      gsap.from(colEls, {
+        y: 36,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top 88%',
+          once: true,
+        },
+      })
 
-    const t2 = gsap.from(bottom, {
-      y: 16,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power2.out',
-      delay: 0.42,
-      scrollTrigger: {
-        trigger: footer,
-        start: 'top 88%',
-        once: true,
-      },
-    })
+      gsap.from(bottom, {
+        y: 16,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        delay: 0.42,
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top 88%',
+          once: true,
+        },
+      })
+    }, footerRef)
 
-    return () => { t1.kill(); t2.kill() }
+    ScrollTrigger.refresh()
+
+    return () => ctx.revert()
   }, [])
 
   function scrollToTop() {
@@ -132,8 +135,13 @@ export default function Footer() {
 
         {/* Col 1 — Brand */}
         <div className="footer-col">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo.png" alt="Moon Coffee" className="footer-logo-img" />
+          <Image
+            src="/images/logo.png"
+            alt="Moon Coffee"
+            width={600}
+            height={492}
+            className="footer-logo-img"
+          />
           <p className="footer-tagline">
             Small-batch specialty coffee roasted with care in the heart of Kensington Market since 1998.
           </p>

@@ -87,8 +87,6 @@ export default function ReviewsAndMap() {
   const infoRef    = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
     const section = sectionRef.current
     const header  = headerRef.current
     const cards   = cardsRef.current
@@ -148,6 +146,9 @@ export default function ReviewsAndMap() {
                         <img
                           src={review.photo}
                           alt={review.name}
+                          loading="lazy"
+                          width={48}
+                          height={48}
                           onError={(e) => {
                             const t = e.currentTarget
                             t.onerror = null

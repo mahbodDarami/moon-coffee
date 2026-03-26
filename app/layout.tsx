@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, Outfit } from 'next/font/google'
+import { Suspense } from 'react'
 import './globals.css'
 import LenisProvider from './components/LenisProvider'
 import LoadingScreen from './components/LoadingScreen'
 import { AuthProvider } from './components/auth/AuthProvider'
 import { MainLayout } from './components/MainLayout'
+import { WelcomeBanner } from './components/WelcomeBanner'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -36,6 +38,9 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <LoadingScreen />
+          <Suspense>
+            <WelcomeBanner />
+          </Suspense>
           <LenisProvider>
             <MainLayout>
               {children}

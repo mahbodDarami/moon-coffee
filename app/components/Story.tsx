@@ -14,9 +14,24 @@ export default function Story() {
   const pillarsRef  = useRef<HTMLDivElement>(null)
   const quoteRef    = useRef<HTMLQuoteElement>(null)
   const videoRef    = useRef<HTMLVideoElement>(null)
-  const [mounted, setMounted] = useState(false)
+  const [videoSrc, setVideoSrc] = useState('')
 
-  useEffect(() => { setMounted(true) }, [])
+  // Lazy-load the coffee-mix video only when section is near the viewport
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoSrc('/videos/coffee-mix.mp4')
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const markVideoReady = useCallback((el: HTMLVideoElement) => {
     el.classList.add('is-ready')
@@ -26,10 +41,9 @@ export default function Story() {
     if (videoRef.current && videoRef.current.readyState >= 2) {
       markVideoReady(videoRef.current)
     }
-  }, [mounted, markVideoReady])
+  }, [videoSrc, markVideoReady])
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
 
     const section = sectionRef.current
     const veil    = veilRef.current
@@ -130,16 +144,14 @@ export default function Story() {
 
         {/* ── Right: video (unchanged) ─────────────────── */}
         <div className="story-right js-reveal" ref={rightRef}>
-          {mounted && (
-            <video
-              ref={videoRef}
-              className="story-video"
-              autoPlay muted loop playsInline
-              onLoadedData={e => markVideoReady(e.currentTarget as HTMLVideoElement)}
-            >
-              <source src="/videos/coffee-mix.mp4" type="video/mp4" />
-            </video>
-          )}
+          <video
+            ref={videoRef}
+            className="story-video"
+            autoPlay muted loop playsInline preload="none"
+            onLoadedData={e => markVideoReady(e.currentTarget as HTMLVideoElement)}
+          >
+            {videoSrc && <source src={videoSrc} type="video/mp4" />}
+          </video>
         </div>
 
       </div>

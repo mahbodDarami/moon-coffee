@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TextGenerateEffect from './ui/TextGenerateEffect'
@@ -11,9 +11,26 @@ export default function Quality() {
   const contentRef = useRef<HTMLDivElement>(null)
   const labelRef   = useRef<HTMLParagraphElement>(null)
   const marksRef   = useRef<HTMLDivElement>(null)
+  const [videoSrc, setVideoSrc] = useState('')
+
+  // Lazy-load the video only when section is near the viewport
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoSrc('/videos/portafilter.mp4')
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
 
     const section = sectionRef.current
     const veil    = veilRef.current
@@ -58,8 +75,8 @@ export default function Quality() {
     <section className="quality" id="quality" ref={sectionRef}>
       <div className="section-veil" ref={veilRef} />
       <div className="quality-bg">
-        <video autoPlay muted loop playsInline>
-          <source src="/videos/portafilter.mp4" type="video/mp4" />
+        <video autoPlay muted loop playsInline preload="none">
+          {videoSrc && <source src={videoSrc} type="video/mp4" />}
         </video>
         <div className="quality-overlay" />
       </div>

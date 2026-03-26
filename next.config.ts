@@ -6,11 +6,21 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "tefvdgukpqnjosvynpcz.supabase.co",
         pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
       },
     ],
   },

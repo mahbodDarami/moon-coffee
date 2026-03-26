@@ -5,6 +5,7 @@ import { useAuth } from '@/app/components/auth/AuthProvider'
 import MenuOverlay from '@/app/components/menu/MenuOverlay'
 import CartDrawer from '@/app/components/cart/CartDrawer'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Nav() {
   const { user, isLoading } = useAuth()
@@ -15,9 +16,18 @@ export default function Nav() {
   const [cartRefresh, setCartRefresh] = useState(0)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.85)
+    let rafId = 0
+    const onScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > window.innerHeight * 0.85)
+      })
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
   }, [])
 
   useEffect(() => {
@@ -36,8 +46,14 @@ export default function Nav() {
 
         {/* Left — logo + wordmark */}
         <Link href="/" className="nav-logo" onClick={closeMobile}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo.png" alt="Moon Coffee" className="nav-logo-img" />
+          <Image
+            src="/images/logo.png"
+            alt="Moon Coffee"
+            width={600}
+            height={492}
+            className="nav-logo-img"
+            priority
+          />
           <span className="nav-wordmark">
             <span className="nav-wordmark-moon">Moon</span>
             <span className="nav-wordmark-coffee">Coffee</span>
@@ -62,7 +78,11 @@ export default function Nav() {
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                   </svg>
                 </button>
-                <Link href="/account" className="nav-signin">Account</Link>
+                <Link href="/account" className="nav-signin">
+                  {user.user_metadata?.full_name?.split(' ')[0] ||
+                   user.user_metadata?.name?.split(' ')[0] ||
+                   'Account'}
+                </Link>
               </>
             ) : (
               <Link href="/login" className="nav-signin">Sign In</Link>
@@ -93,7 +113,11 @@ export default function Nav() {
           user ? (
             <>
               <button className="nm-link" onClick={openCart}>Cart</button>
-              <Link href="/account" className="nm-signin" onClick={closeMobile}>Account</Link>
+              <Link href="/account" className="nm-signin" onClick={closeMobile}>
+                {user.user_metadata?.full_name?.split(' ')[0] ||
+                 user.user_metadata?.name?.split(' ')[0] ||
+                 'Account'}
+              </Link>
               <Link href="/orders" className="nm-link" onClick={closeMobile}>Orders</Link>
             </>
           ) : (

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { motion, stagger, useAnimate, useInView } from 'framer-motion'
 
 interface Props {
@@ -24,6 +24,7 @@ export default function TextGenerateEffect({
   const [scope, animate] = useAnimate()
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-15% 0px' })
+  const wordList = useMemo(() => words.split(' '), [words])
 
   useEffect(() => {
     if (!isInView) return
@@ -37,7 +38,7 @@ export default function TextGenerateEffect({
   return (
     <div ref={ref}>
       <motion.div ref={scope} className={className}>
-        {words.split(' ').map((word, i) => (
+        {wordList.map((word, i) => (
           <motion.span
             key={i}
             className="word"
