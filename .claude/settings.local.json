@@ -93,7 +93,20 @@
       "Bash(ls \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\app\\\\\\(auth\\)\")",
       "Bash(node -e \"require\\(''clsx''\\); console.log\\(''clsx ok''\\)\")",
       "Bash(node -e \"require\\(''tailwind-merge''\\); console.log\\(''tm ok''\\)\")",
-      "Bash(find C:UsersmahboAppDataLocalTempclaudeC--Users-mahbo-Videos-college-arian-coop-3Dweb-2 -name *.jpg -o -name *.png -o -name *.jpeg -o -name *.webp)"
+      "Bash(find C:UsersmahboAppDataLocalTempclaudeC--Users-mahbo-Videos-college-arian-coop-3Dweb-2 -name *.jpg -o -name *.png -o -name *.jpeg -o -name *.webp)",
+      "Bash(file \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/videos/\"*)",
+      "Bash(grep -r \"img\\\\|Image\\\\|<img\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app' --include=*.tsx --include=*.ts)",
+      "Bash(grep -rn \"from ''gsap''\" \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app\" --include=\"*.tsx\" --include=\"*.ts\")",
+      "Bash(grep -rn \"from ''framer-motion''\" \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app\" --include=\"*.tsx\" --include=\"*.ts\")",
+      "Bash(grep -rn \"ScrollTrigger\\\\|Lenis\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app' --include=*.tsx --include=*.ts)",
+      "Bash(grep -rn \"preload\\\\|loading\\\\|priority\\\\|sizes\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app' --include=*.tsx)",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,avg_frame_rate,codec_name,bit_rate -of default=noprint_wrappers=1 '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/videos/hero.mp4')",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,avg_frame_rate,codec_name,bit_rate -of default=noprint_wrappers=1 '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/videos/coffee-mix.mp4')",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,avg_frame_rate,codec_name,bit_rate -of default=noprint_wrappers=1 '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/videos/portafilter.mp4')",
+      "Bash(identify -verbose '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/logo.png')",
+      "Bash(file \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/\"*)",
+      "Bash(identify \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/logo.png\")",
+      "Bash(grep -rn \"useMemo\\\\|useCallback\\\\|React.memo\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app/components' --include=*.tsx)"
     ]
   },
   "hooks": {
