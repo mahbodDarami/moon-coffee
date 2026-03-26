@@ -114,7 +114,10 @@
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)[:2]\\)\")",
       "Read(//c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/$APPDATA/**)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); vercel=[v for k,v in d.get\\(''''mcpServers'''',{}\\).items\\(\\) if ''''vercel'''' in k.lower\\(\\) or ''''a24f'''' in k.lower\\(\\)]; print\\(json.dumps\\(vercel, indent=2\\)\\)\")",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
+      "Bash(vercel link:*)",
+      "Bash(vercel env:*)",
+      "Bash(vercel --prod)"
     ]
   },
   "hooks": {
