@@ -117,7 +117,10 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
       "Bash(vercel link:*)",
       "Bash(vercel env:*)",
-      "Bash(vercel --prod)"
+      "Bash(vercel --prod)",
+      "Bash(npm i:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(''''version:'''', d[''''version'''']\\); print\\(''''exports:'''', list\\(d.get\\(''''exports'''',{}\\).keys\\(\\)\\)[:10]\\)\")",
+      "Bash(node -e \"const p=require\\(''./node_modules/@vercel/speed-insights/package.json''\\); console.log\\(''version:'', p.version\\); console.log\\(''exports:'', Object.keys\\(p.exports||{}\\).slice\\(0,10\\)\\)\")"
     ]
   },
   "hooks": {
