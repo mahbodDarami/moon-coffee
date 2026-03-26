@@ -106,7 +106,15 @@
       "Bash(identify -verbose '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/logo.png')",
       "Bash(file \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/\"*)",
       "Bash(identify \"/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/public/images/logo.png\")",
-      "Bash(grep -rn \"useMemo\\\\|useCallback\\\\|React.memo\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app/components' --include=*.tsx)"
+      "Bash(grep -rn \"useMemo\\\\|useCallback\\\\|React.memo\" '/c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app/components' --include=*.tsx)",
+      "mcp__a24fdd2d-3903-4cb5-8c3f-b4e56db37fce__list_teams",
+      "mcp__a24fdd2d-3903-4cb5-8c3f-b4e56db37fce__deploy_to_vercel",
+      "Bash(vercel --version)",
+      "Bash(echo \"VERCEL_TOKEN=$VERCEL_TOKEN\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)[:2]\\)\")",
+      "Read(//c/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/$APPDATA/**)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); vercel=[v for k,v in d.get\\(''''mcpServers'''',{}\\).items\\(\\) if ''''vercel'''' in k.lower\\(\\) or ''''a24f'''' in k.lower\\(\\)]; print\\(json.dumps\\(vercel, indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")"
     ]
   },
   "hooks": {
