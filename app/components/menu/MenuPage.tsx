@@ -80,6 +80,14 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
   return (
     <div className="mp">
 
+      {/* Sticky video background */}
+      <div className="mp-video-bg" aria-hidden="true">
+        <video autoPlay muted loop playsInline>
+          <source src="/videos/menu-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="mp-video-overlay" />
+      </div>
+
       {/* Hero */}
       <div className="mp-hero" ref={heroRef}>
         <div className="mp-hero-overlay" />

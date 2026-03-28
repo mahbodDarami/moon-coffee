@@ -62,8 +62,8 @@ export default function Nav() {
 
         {/* Center — links */}
         <div className="nav-links-group">
-          <a href="#quality" className="nav-link">Our Craft</a>
-          <a href="#story" className="nav-link">Our Story</a>
+          <a href="/#quality" className="nav-link">Our Craft</a>
+          <a href="/#story" className="nav-link">Our Story</a>
           <Link href="/menu" className="nav-link-menu">Menu</Link>
         </div>
 
@@ -105,8 +105,8 @@ export default function Nav() {
 
       {/* Mobile menu overlay */}
       <div className={`nav-mobile-menu${mobileOpen ? ' is-open' : ''}`} aria-hidden={!mobileOpen}>
-        <a href="#quality" className="nm-link" onClick={closeMobile}>Our Craft</a>
-        <a href="#story" className="nm-link" onClick={closeMobile}>Our Story</a>
+        <a href="/#quality" className="nm-link" onClick={closeMobile}>Our Craft</a>
+        <a href="/#story" className="nm-link" onClick={closeMobile}>Our Story</a>
         <Link href="/menu" className="nm-link" onClick={closeMobile}>Menu</Link>
         <div className="nm-divider" />
         {!isLoading && (
