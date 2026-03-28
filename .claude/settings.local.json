@@ -127,7 +127,16 @@
       "Bash(mkdir -p \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude\")",
       "Bash(\"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude/launch.json\")",
       "Bash(xxd)",
-      "Bash(taskkill //PID 28896 //F)"
+      "Bash(taskkill //PID 28896 //F)",
+      "mcp__stitch__list_projects",
+      "mcp__stitch__get_screen",
+      "Bash(curl -s \"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzAwMDY0ZTBkMTNhNTRiMDgwNDMxMjA0NTYxMTY0ZjEzEgsSBxDtj8LYrR4YAZIBIwoKcHJvamVjdF9pZBIVQhMxMzA5MjIzODA4MjI0Nzg0NjAy&filename=&opi=89354086\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/menu)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill /PID 35424 /F)",
+      "Bash(cmd /c \"taskkill /PID 35424 /F\")",
+      "Bash(echo \"exit: $?\")",
+      "Bash(powershell -Command \"Stop-Process -Id 35424 -Force -ErrorAction SilentlyContinue; Start-Sleep 1; netstat -ano | Select-String '':3000''\")"
     ]
   },
   "hooks": {
