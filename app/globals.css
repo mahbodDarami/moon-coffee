@@ -2918,7 +2918,7 @@ a { text-decoration: none; color: inherit; }
 
 .mp {
   min-height: 100vh;
-  background: #120d0ae0;
+  background: var(--roast);
 }
 
 /* ── Hero ── */
@@ -3024,6 +3024,7 @@ a { text-decoration: none; color: inherit; }
   max-width: var(--max);
   margin: 0 auto;
   display: flex;
+  justify-content: center;
   gap: 0.35rem;
   padding: 0.85rem var(--pad);
   overflow-x: auto;
@@ -3084,26 +3085,27 @@ a { text-decoration: none; color: inherit; }
 /* ── Card Grid ── */
 .mp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 360px));
+  justify-content: center;
   gap: 1.5rem;
 }
 
 /* 4 cards @ 1600px+ */
 @media (min-width: 1600px) {
   .mp-body { max-width: 1500px; }
-  .mp-grid { grid-template-columns: repeat(4, 1fr); }
+  .mp-grid { grid-template-columns: repeat(4, minmax(0, 360px)); }
 }
 
 /* 5 cards @ 1920px+ */
 @media (min-width: 1920px) {
   .mp-body { max-width: 1800px; }
-  .mp-grid { grid-template-columns: repeat(5, 1fr); }
+  .mp-grid { grid-template-columns: repeat(5, minmax(0, 340px)); }
 }
 
 /* 6 cards @ 2400px+ */
 @media (min-width: 2400px) {
   .mp-body { max-width: 2200px; }
-  .mp-grid { grid-template-columns: repeat(6, 1fr); }
+  .mp-grid { grid-template-columns: repeat(6, minmax(0, 340px)); }
 }
 
 /* ── Card ── */
@@ -3694,21 +3696,22 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Responsive ── */
 
+/* ── 3-column mobile card sizing ── */
 @media (max-width: 768px) {
-  .mpc-name  { font-size: 1.4rem; }
-  .mpc-body  { padding: 0 1rem 1rem; margin-top: -3rem; }
-  .mpc-desc  { font-size: 0.75rem; }
-  .mpc-price { font-size: 1.2rem; }
-  .mpc-tag   { font-size: 0.6rem; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; }
-  .mpc-tags  { gap: 0.3rem; margin-top: 0.5rem; }
-  .mpc-add-btn { padding: 0.7rem 0; font-size: 0.7rem; letter-spacing: 0.1em; gap: 0.35rem; }
+  .mpc-name     { font-size: 1.0rem; }
+  .mpc-body     { padding: 0 0.6rem 0.75rem; margin-top: -2.5rem; }
+  .mpc-desc     { display: none; }
+  .mpc-price    { font-size: 1.0rem; }
+  .mpc-tags     { display: none; }
+  .mpc-info-row { gap: 0.2rem; margin-bottom: 0.3rem; }
+  .mpc-add-btn  { padding: 0.55rem 0; font-size: 0.58rem; letter-spacing: 0.08em; gap: 0.2rem; }
+  .mpc-add-btn svg { width: 10px; height: 10px; }
 }
 
 @media (max-width: 480px) {
-  .mpc-name  { font-size: 1.2rem; }
-  .mpc-desc  { display: none; }
-  .mpc-body  { padding: 0 0.85rem 0.85rem; margin-top: -2.5rem; }
-  .mpc-info-row { gap: 0.35rem; }
+  .mpc-name  { font-size: 0.85rem; }
+  .mpc-body  { padding: 0 0.4rem 0.55rem; margin-top: -2rem; }
+  .mpc-add-btn { padding: 0.45rem 0; font-size: 0.5rem; letter-spacing: 0.06em; }
 }
 
 /* ── Responsive ── */
@@ -3720,9 +3723,11 @@ a { text-decoration: none; color: inherit; }
   }
 
   .mp-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
   }
+
+  .mp-body { padding: 1.5rem 0.75rem 3rem; }
 
   .md-layout {
     grid-template-columns: 1fr;
