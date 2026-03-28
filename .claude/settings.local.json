@@ -126,7 +126,8 @@
       "Bash(ls \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app/\\(shop\\)/\")",
       "Bash(mkdir -p \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude\")",
       "Bash(\"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude/launch.json\")",
-      "Bash(xxd)"
+      "Bash(xxd)",
+      "Bash(taskkill //PID 28896 //F)"
     ]
   },
   "hooks": {
