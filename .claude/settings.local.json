@@ -120,7 +120,13 @@
       "Bash(vercel --prod)",
       "Bash(npm i:*)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(''''version:'''', d[''''version'''']\\); print\\(''''exports:'''', list\\(d.get\\(''''exports'''',{}\\).keys\\(\\)\\)[:10]\\)\")",
-      "Bash(node -e \"const p=require\\(''./node_modules/@vercel/speed-insights/package.json''\\); console.log\\(''version:'', p.version\\); console.log\\(''exports:'', Object.keys\\(p.exports||{}\\).slice\\(0,10\\)\\)\")"
+      "Bash(node -e \"const p=require\\(''./node_modules/@vercel/speed-insights/package.json''\\); console.log\\(''version:'', p.version\\); console.log\\(''exports:'', Object.keys\\(p.exports||{}\\).slice\\(0,10\\)\\)\")",
+      "mcp__73338ca9-2932-4e36-8de5-2f5a192330b5__list_tables",
+      "Bash(ls \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next\\\\app\\\\\\(shop\\)\"\")",
+      "Bash(ls \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/app/\\(shop\\)/\")",
+      "Bash(mkdir -p \"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude\")",
+      "Bash(\"C:/Users/mahbo/Videos/college/arian coop/3Dweb_2/moon-coffee-next/.claude/launch.json\")",
+      "Bash(xxd)"
     ]
   },
   "hooks": {
