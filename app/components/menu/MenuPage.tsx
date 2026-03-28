@@ -61,6 +61,7 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
   function handleCategoryChange(catId: string | null) {
     setActiveCategory(catId)
     cardsRef.current = []
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   // Group items by category for "All" view
@@ -85,7 +86,7 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
         <div className="mp-hero-content">
           <p className="mp-hero-label">Explore</p>
           <h1 className="mp-hero-heading">Our Menu</h1>
-          <p className="mp-hero-sub">Handcrafted drinks & freshly baked treats, made with love</p>
+          <p className="mp-hero-sub">Handcrafted drinks &amp; freshly baked treats, made with love</p>
         </div>
       </div>
 
