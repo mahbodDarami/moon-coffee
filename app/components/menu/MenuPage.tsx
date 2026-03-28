@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { MenuCategory, MenuItem } from '@/types'
+import MenuPageCard from '@/app/components/ui/MenuPageCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,7 +14,6 @@ interface MenuPageProps {
 }
 
 export default function MenuPage({ categories, items }: MenuPageProps) {
-  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
@@ -24,7 +23,7 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
     ? items.filter((item) => item.category_id === activeCategory)
     : items
 
-  // Hero animation on mount
+  // Hero entrance animation
   useEffect(() => {
     const hero = heroRef.current
     if (!hero) return
@@ -79,6 +78,7 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
 
   return (
     <div className="mp">
+
       {/* Hero */}
       <div className="mp-hero" ref={heroRef}>
         <div className="mp-hero-overlay" />
@@ -121,40 +121,11 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
                 {catItems.map((item) => {
                   const idx = cardIndex++
                   return (
-                    <div
+                    <MenuPageCard
                       key={item.id}
-                      className="mp-card"
+                      item={item}
                       ref={(el) => { cardsRef.current[idx] = el }}
-                      onClick={() => router.push(`/menu/${item.slug}`)}
-                    >
-                      {item.image_url && (
-                        <div className="mp-card-img">
-                          <img src={item.image_url} alt={item.name} />
-                        </div>
-                      )}
-                      <div className="mp-card-body">
-                        <div className="mp-card-top">
-                          <h3 className="mp-card-name">{item.name}</h3>
-                          <span className="mp-card-price">${(item.price / 100).toFixed(2)}</span>
-                        </div>
-                        {item.description && (
-                          <p className="mp-card-desc">{item.description}</p>
-                        )}
-                        {item.tags && item.tags.length > 0 && (
-                          <div className="mp-card-tags">
-                            {item.tags.map((tag) => (
-                              <span key={tag} className="mp-card-tag">{tag}</span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <div className="mp-card-cta">
-                        <span>Customize & Add</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                      </div>
-                    </div>
+                    />
                   )
                 })}
               </div>
@@ -164,44 +135,16 @@ export default function MenuPage({ categories, items }: MenuPageProps) {
           // Single category
           <div className="mp-grid" ref={gridRef}>
             {filteredItems.map((item, i) => (
-              <div
+              <MenuPageCard
                 key={item.id}
-                className="mp-card"
+                item={item}
                 ref={(el) => { cardsRef.current[i] = el }}
-                onClick={() => router.push(`/menu/${item.slug}`)}
-              >
-                {item.image_url && (
-                  <div className="mp-card-img">
-                    <img src={item.image_url} alt={item.name} />
-                  </div>
-                )}
-                <div className="mp-card-body">
-                  <div className="mp-card-top">
-                    <h3 className="mp-card-name">{item.name}</h3>
-                    <span className="mp-card-price">${(item.price / 100).toFixed(2)}</span>
-                  </div>
-                  {item.description && (
-                    <p className="mp-card-desc">{item.description}</p>
-                  )}
-                  {item.tags && item.tags.length > 0 && (
-                    <div className="mp-card-tags">
-                      {item.tags.map((tag) => (
-                        <span key={tag} className="mp-card-tag">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="mp-card-cta">
-                  <span>Customize & Add</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </div>
-              </div>
+              />
             ))}
           </div>
         )}
       </div>
+
     </div>
   )
 }

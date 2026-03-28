@@ -3076,8 +3076,26 @@ a { text-decoration: none; color: inherit; }
 /* ── Card Grid ── */
 .mp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* 4 cards @ 1600px+ */
+@media (min-width: 1600px) {
+  .mp-body { max-width: 1500px; }
+  .mp-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* 5 cards @ 1920px+ */
+@media (min-width: 1920px) {
+  .mp-body { max-width: 1800px; }
+  .mp-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* 6 cards @ 2400px+ */
+@media (min-width: 2400px) {
+  .mp-body { max-width: 2200px; }
+  .mp-grid { grid-template-columns: repeat(6, 1fr); }
 }
 
 /* ── Card ── */
@@ -3489,6 +3507,201 @@ a { text-decoration: none; color: inherit; }
   color: #fff;
 }
 
+/* ============================================
+   MENU PAGE CARD (Stitch design — MenuPageCard)
+   ============================================ */
+
+.mpc {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #211a17;
+  border: 1px solid rgba(80, 68, 66, 0.12);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  outline: none;
+}
+
+.mpc:hover,
+.mpc:focus-visible {
+  border-color: rgba(200, 168, 122, 0.3);
+  box-shadow: 0 20px 50px rgba(200, 168, 122, 0.06);
+}
+
+/* ── Image — 4:5 portrait ── */
+.mpc-img-wrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mpc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.mpc:hover .mpc-img {
+  transform: scale(1.1);
+}
+
+/* Placeholder when no image */
+.mpc-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: linear-gradient(160deg, #150a07 0%, #211410 55%, #1a0e0a 100%);
+  color: rgba(200, 168, 122, 0.2);
+}
+
+.mpc-img-placeholder-label {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(200, 168, 122, 0.16);
+}
+
+/* Gradient: image fades into card body color at bottom */
+.mpc-img-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #211a17 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ── Body overlaps image ── */
+.mpc-body {
+  padding: 0 2rem 1.5rem;
+  position: relative;
+  margin-top: -5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Name + price row */
+.mpc-info-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mpc-info-left { flex: 1; min-width: 0; }
+
+.mpc-name {
+  font-family: var(--font-cormorant), serif;
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin: 0;
+  line-height: 1.15;
+  transition: color 0.3s ease;
+}
+
+.mpc:hover .mpc-name {
+  color: var(--amber-lt);
+}
+
+.mpc-desc {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(233, 191, 142, 0.65);
+  margin: 0.3rem 0 0;
+  line-height: 1.45;
+}
+
+.mpc-price {
+  font-family: var(--font-cormorant), serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--amber);
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.mpc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.mpc-tag {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  background: rgba(200, 168, 122, 0.08);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+}
+
+/* ── Full-width CTA button ── */
+.mpc-add-btn {
+  width: 100%;
+  padding: 1rem 0;
+  background: rgba(60, 51, 47, 1);
+  border: 1px solid rgba(80, 68, 66, 0.3);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  color: var(--amber);
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: auto;
+}
+
+.mpc:hover .mpc-add-btn {
+  background: var(--amber);
+  color: #3c2f00;
+  box-shadow: 0 0 20px rgba(200, 168, 122, 0.25);
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 768px) {
+  .mpc-name  { font-size: 1.4rem; }
+  .mpc-body  { padding: 0 1rem 1rem; margin-top: -3rem; }
+  .mpc-desc  { font-size: 0.75rem; }
+  .mpc-price { font-size: 1.2rem; }
+  .mpc-tag   { font-size: 0.6rem; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; }
+  .mpc-tags  { gap: 0.3rem; margin-top: 0.5rem; }
+  .mpc-add-btn { padding: 0.7rem 0; font-size: 0.7rem; letter-spacing: 0.1em; gap: 0.35rem; }
+}
+
+@media (max-width: 480px) {
+  .mpc-name  { font-size: 1.2rem; }
+  .mpc-desc  { display: none; }
+  .mpc-body  { padding: 0 0.85rem 0.85rem; margin-top: -2.5rem; }
+  .mpc-info-row { gap: 0.35rem; }
+}
+
 /* ── Responsive ── */
 
 @media (max-width: 768px) {
@@ -3498,7 +3711,8 @@ a { text-decoration: none; color: inherit; }
   }
 
   .mp-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 
   .md-layout {
