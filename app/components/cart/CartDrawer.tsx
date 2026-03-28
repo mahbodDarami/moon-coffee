@@ -6,7 +6,7 @@ import { getCart, updateCartItem, removeFromCart } from '@/app/actions/cart'
 import { getGuestCart, setGuestCart, GUEST_CART_KEY } from '@/app/components/menu/MenuOverlay'
 import { getMenuItems } from '@/app/actions/menu'
 import QuantitySelector from '@/app/components/menu/QuantitySelector'
-import type { CartItemWithMenu, MenuItem } from '@/types'
+import type { CartItemWithMenuAndOptions, MenuItem } from '@/types'
 import Link from 'next/link'
 
 interface CartDrawerProps {
@@ -16,11 +16,13 @@ interface CartDrawerProps {
 }
 
 type DisplayCartItem = {
+  id: string
   itemId: string
   name: string
   price: number
   quantity: number
   image_url?: string | null
+  optionSummary?: string
 }
 
 export default function CartDrawer({ isOpen, onClose, refreshKey }: CartDrawerProps) {
@@ -34,13 +36,24 @@ export default function CartDrawer({ isOpen, onClose, refreshKey }: CartDrawerPr
       const result = await getCart()
       if (result.success) {
         setItems(
-          result.data.map((ci: CartItemWithMenu) => ({
-            itemId: ci.item_id,
-            name: ci.menu_items.name,
-            price: ci.menu_items.price,
-            quantity: ci.quantity,
-            image_url: ci.menu_items.image_url,
-          }))
+          result.data.map((ci: CartItemWithMenuAndOptions) => {
+            const optMods = (ci.cart_item_options || []).reduce(
+              (sum, opt) => sum + (opt.product_options?.price_modifier || 0), 0
+            )
+            const optNames = (ci.cart_item_options || [])
+              .filter((opt) => opt.product_options?.product_option_groups?.type !== 'text')
+              .map((opt) => opt.product_options?.name)
+              .filter(Boolean)
+            return {
+              id: ci.id,
+              itemId: ci.item_id,
+              name: ci.menu_items.name,
+              price: ci.menu_items.price + optMods,
+              quantity: ci.quantity,
+              image_url: ci.menu_items.image_url,
+              optionSummary: optNames.length > 0 ? optNames.join(', ') : undefined,
+            }
+          })
         )
       }
     } else {
@@ -48,15 +61,24 @@ export default function CartDrawer({ isOpen, onClose, refreshKey }: CartDrawerPr
       if (guestItems.length > 0) {
         const allItems = await getMenuItems()
         const mapped: DisplayCartItem[] = guestItems
-          .map((gi) => {
+          .map((gi, index) => {
             const menuItem = allItems.find((m: MenuItem) => m.id === gi.itemId)
             if (!menuItem) return null
+            const optMods = (gi.selectedOptions || []).reduce(
+              (sum, opt) => sum + (opt.priceModifier || 0), 0
+            )
+            const optNames = (gi.selectedOptions || [])
+              .filter((opt) => !opt.value)
+              .map((opt) => opt.optionName)
+              .filter(Boolean)
             return {
+              id: `guest-${index}`,
               itemId: gi.itemId,
               name: menuItem.name,
-              price: menuItem.price,
+              price: menuItem.price + optMods,
               quantity: gi.quantity,
               image_url: menuItem.image_url,
+              optionSummary: optNames.length > 0 ? optNames.join(', ') : undefined,
             }
           })
           .filter(Boolean) as DisplayCartItem[]
@@ -86,23 +108,25 @@ export default function CartDrawer({ isOpen, onClose, refreshKey }: CartDrawerPr
     return () => window.removeEventListener('keydown', handleKey)
   }, [isOpen, onClose])
 
-  async function handleUpdateQty(itemId: string, newQty: number) {
+  async function handleUpdateQty(id: string, newQty: number) {
     if (user) {
-      await updateCartItem(itemId, newQty)
+      await updateCartItem(id, newQty)
     } else {
       const cart = getGuestCart()
-      const item = cart.find((i) => i.itemId === itemId)
-      if (item) item.quantity = newQty
+      const index = parseInt(id.replace('guest-', ''), 10)
+      if (!isNaN(index) && cart[index]) cart[index].quantity = newQty
       setGuestCart(cart)
     }
     await loadCart()
   }
 
-  async function handleRemove(itemId: string) {
+  async function handleRemove(id: string) {
     if (user) {
-      await removeFromCart(itemId)
+      await removeFromCart(id)
     } else {
-      const cart = getGuestCart().filter((i) => i.itemId !== itemId)
+      const cart = getGuestCart()
+      const index = parseInt(id.replace('guest-', ''), 10)
+      if (!isNaN(index)) cart.splice(index, 1)
       setGuestCart(cart)
     }
     await loadCart()
@@ -129,17 +153,20 @@ export default function CartDrawer({ isOpen, onClose, refreshKey }: CartDrawerPr
           ) : (
             <>
               {items.map((item) => (
-                <div key={item.itemId} className="cart-item">
+                <div key={item.id} className="cart-item">
                   <div className="cart-item-info">
                     <span className="cart-item-name">{item.name}</span>
+                    {item.optionSummary && (
+                      <span className="cart-item-options">{item.optionSummary}</span>
+                    )}
                     <span className="cart-item-price">${(item.price / 100).toFixed(2)}</span>
                   </div>
                   <div className="cart-item-actions">
                     <QuantitySelector
                       quantity={item.quantity}
-                      onChange={(qty) => handleUpdateQty(item.itemId, qty)}
+                      onChange={(qty) => handleUpdateQty(item.id, qty)}
                     />
-                    <button className="cart-item-remove" onClick={() => handleRemove(item.itemId)}>
+                    <button className="cart-item-remove" onClick={() => handleRemove(item.id)}>
                       Remove
                     </button>
                   </div>

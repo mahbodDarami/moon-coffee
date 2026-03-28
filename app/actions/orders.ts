@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
-import type { ActionResult, OrderWithItems } from '@/types'
+import type { ActionResult, OrderWithItems, OrderWithItemsAndOptions } from '@/types'
 
 const TAX_RATE = 0.09 // 9% tax
 
@@ -18,7 +18,7 @@ export async function createOrder(notes?: string): Promise<ActionResult<string>>
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { success: false, error: 'Not authenticated' }
 
-  // Get cart with items
+  // Get cart with items and their selected options
   const { data: cart } = await supabase
     .from('carts')
     .select('id')
@@ -29,17 +29,20 @@ export async function createOrder(notes?: string): Promise<ActionResult<string>>
 
   const { data: cartItems } = await supabase
     .from('cart_items')
-    .select('*, menu_items(id, name, price)')
+    .select('*, menu_items(id, name, price), cart_item_options(*, product_options(name, price_modifier, product_option_groups(name)))')
     .eq('cart_id', cart.id)
 
   if (!cartItems || cartItems.length === 0) {
     return { success: false, error: 'Cart is empty' }
   }
 
-  // Calculate totals
+  // Calculate totals including option price modifiers
   const subtotal = cartItems.reduce((sum, item) => {
     const menuItem = item.menu_items as unknown as { id: string; name: string; price: number }
-    return sum + menuItem.price * item.quantity
+    const optionModifiers = (item.cart_item_options || []).reduce((optSum: number, opt: { product_options: { price_modifier: number } }) => {
+      return optSum + (opt.product_options?.price_modifier || 0)
+    }, 0)
+    return sum + (menuItem.price + optionModifiers) * item.quantity
   }, 0)
   const tax = Math.round(subtotal * TAX_RATE)
   const total = subtotal + tax
@@ -61,26 +64,56 @@ export async function createOrder(notes?: string): Promise<ActionResult<string>>
 
   if (orderError) return { success: false, error: orderError.message }
 
-  // Create order items (snapshot prices)
-  const orderItems = cartItems.map((item) => {
+  // Create order items (snapshot prices including option modifiers)
+  for (const item of cartItems) {
     const menuItem = item.menu_items as unknown as { id: string; name: string; price: number }
-    return {
-      order_id: order.id,
-      item_id: menuItem.id,
-      item_name: menuItem.name,
-      item_price: menuItem.price,
-      quantity: item.quantity,
-      subtotal: menuItem.price * item.quantity,
+    const optionModifiers = (item.cart_item_options || []).reduce((optSum: number, opt: { product_options: { price_modifier: number } }) => {
+      return optSum + (opt.product_options?.price_modifier || 0)
+    }, 0)
+    const itemPrice = menuItem.price + optionModifiers
+
+    const { data: orderItem, error: itemError } = await supabase
+      .from('order_items')
+      .insert({
+        order_id: order.id,
+        item_id: menuItem.id,
+        item_name: menuItem.name,
+        item_price: itemPrice,
+        quantity: item.quantity,
+        subtotal: itemPrice * item.quantity,
+      })
+      .select('id')
+      .single()
+
+    if (itemError) return { success: false, error: itemError.message }
+
+    // Snapshot options into order_item_options
+    const cartOptions = item.cart_item_options as unknown as Array<{
+      value: string | null
+      product_options: {
+        name: string
+        price_modifier: number
+        product_option_groups: { name: string }
+      }
+    }>
+
+    if (cartOptions && cartOptions.length > 0) {
+      const orderItemOptions = cartOptions.map((opt) => ({
+        order_item_id: orderItem.id,
+        option_name: opt.product_options.product_option_groups.name,
+        option_value: opt.value || opt.product_options.name,
+        price_modifier: opt.product_options.price_modifier,
+      }))
+
+      const { error: optError } = await supabase
+        .from('order_item_options')
+        .insert(orderItemOptions)
+
+      if (optError) return { success: false, error: optError.message }
     }
-  })
+  }
 
-  const { error: itemsError } = await supabase
-    .from('order_items')
-    .insert(orderItems)
-
-  if (itemsError) return { success: false, error: itemsError.message }
-
-  // Clear cart
+  // Clear cart (cart_item_options deleted via CASCADE)
   await supabase.from('cart_items').delete().eq('cart_id', cart.id)
 
   return { success: true, data: order.id }
@@ -101,18 +134,18 @@ export async function getOrders(): Promise<ActionResult<OrderWithItems[]>> {
   return { success: true, data: (data || []) as OrderWithItems[] }
 }
 
-export async function getOrder(orderId: string): Promise<ActionResult<OrderWithItems>> {
+export async function getOrder(orderId: string): Promise<ActionResult<OrderWithItemsAndOptions>> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { success: false, error: 'Not authenticated' }
 
   const { data, error } = await supabase
     .from('orders')
-    .select('*, order_items(*)')
+    .select('*, order_items(*, order_item_options(*))')
     .eq('id', orderId)
     .eq('user_id', user.id)
     .single()
 
   if (error) return { success: false, error: 'Order not found' }
-  return { success: true, data: data as OrderWithItems }
+  return { success: true, data: data as OrderWithItemsAndOptions }
 }

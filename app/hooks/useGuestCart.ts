@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import type { GuestCartItem } from '@/types'
+import type { GuestCartItem, SelectedOption } from '@/types'
 
 const GUEST_CART_KEY = 'moon-coffee-guest-cart'
 
@@ -26,37 +26,27 @@ function writeGuestCart(items: GuestCartItem[]) {
 export function useGuestCart() {
   const [items, setItems] = useState<GuestCartItem[]>(readGuestCart)
 
-  const add = useCallback((itemId: string, quantity: number) => {
+  const add = useCallback((itemId: string, quantity: number, selectedOptions?: SelectedOption[]) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.itemId === itemId)
-      let updated: GuestCartItem[]
-      if (existing) {
-        updated = prev.map((i) =>
-          i.itemId === itemId
-            ? { ...i, quantity: Math.min(i.quantity + quantity, 99) }
-            : i
-        )
-      } else {
-        updated = [...prev, { itemId, quantity }]
-      }
+      const updated = [...prev, { itemId, quantity, selectedOptions }]
       writeGuestCart(updated)
       return updated
     })
   }, [])
 
-  const updateQty = useCallback((itemId: string, quantity: number) => {
+  const updateQty = useCallback((index: number, quantity: number) => {
     setItems((prev) => {
-      const updated = prev.map((i) =>
-        i.itemId === itemId ? { ...i, quantity } : i
+      const updated = prev.map((item, i) =>
+        i === index ? { ...item, quantity } : item
       )
       writeGuestCart(updated)
       return updated
     })
   }, [])
 
-  const remove = useCallback((itemId: string) => {
+  const remove = useCallback((index: number) => {
     setItems((prev) => {
-      const updated = prev.filter((i) => i.itemId !== itemId)
+      const updated = prev.filter((_, i) => i !== index)
       writeGuestCart(updated)
       return updated
     })

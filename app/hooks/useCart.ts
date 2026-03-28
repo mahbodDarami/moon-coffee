@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useAuth } from '@/app/components/auth/AuthProvider'
 import { getCart, addToCart, updateCartItem, removeFromCart, clearCart, syncGuestCart } from '@/app/actions/cart'
-import type { CartItemWithMenu, GuestCartItem } from '@/types'
+import type { CartItemWithMenuAndOptions, GuestCartItem } from '@/types'
 
 const GUEST_CART_KEY = 'moon-coffee-guest-cart'
 
@@ -16,11 +16,6 @@ function getGuestCartItems(): GuestCartItem[] {
   }
 }
 
-function setGuestCartItems(items: GuestCartItem[]) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(GUEST_CART_KEY, JSON.stringify(items))
-}
-
 function clearGuestCartItems() {
   if (typeof window === 'undefined') return
   localStorage.removeItem(GUEST_CART_KEY)
@@ -28,7 +23,7 @@ function clearGuestCartItems() {
 
 export function useCart() {
   const { user, isLoading: authLoading } = useAuth()
-  const [items, setItems] = useState<CartItemWithMenu[]>([])
+  const [items, setItems] = useState<CartItemWithMenuAndOptions[]>([])
   const [loading, setLoading] = useState(true)
   const [synced, setSynced] = useState(false)
 
@@ -42,14 +37,12 @@ export function useCart() {
     }
 
     async function syncAndLoad() {
-      // If user just logged in and has guest cart items, sync them
       const guestItems = getGuestCartItems()
       if (guestItems.length > 0) {
         await syncGuestCart(guestItems)
         clearGuestCartItems()
       }
 
-      // Load server cart
       const result = await getCart()
       if (result.success) setItems(result.data)
       setSynced(true)
@@ -65,23 +58,27 @@ export function useCart() {
     if (result.success) setItems(result.data)
   }, [user])
 
-  const add = useCallback(async (itemId: string, quantity: number) => {
+  const add = useCallback(async (
+    itemId: string,
+    quantity: number,
+    selectedOptions?: { optionId: string; value?: string }[]
+  ) => {
     if (!user) return { success: false, error: 'Not authenticated' }
-    const result = await addToCart(itemId, quantity)
+    const result = await addToCart(itemId, quantity, selectedOptions)
     if (result.success) await refresh()
     return result
   }, [user, refresh])
 
-  const updateQty = useCallback(async (itemId: string, quantity: number) => {
+  const updateQty = useCallback(async (cartItemId: string, quantity: number) => {
     if (!user) return { success: false, error: 'Not authenticated' }
-    const result = await updateCartItem(itemId, quantity)
+    const result = await updateCartItem(cartItemId, quantity)
     if (result.success) await refresh()
     return result
   }, [user, refresh])
 
-  const remove = useCallback(async (itemId: string) => {
+  const remove = useCallback(async (cartItemId: string) => {
     if (!user) return { success: false, error: 'Not authenticated' }
-    const result = await removeFromCart(itemId)
+    const result = await removeFromCart(cartItemId)
     if (result.success) await refresh()
     return result
   }, [user, refresh])
@@ -99,7 +96,13 @@ export function useCart() {
   )
 
   const subtotal = useMemo(
-    () => items.reduce((sum, item) => sum + item.menu_items.price * item.quantity, 0),
+    () => items.reduce((sum, item) => {
+      const optionModifiers = (item.cart_item_options || []).reduce(
+        (optSum, opt) => optSum + (opt.product_options?.price_modifier || 0),
+        0
+      )
+      return sum + (item.menu_items.price + optionModifiers) * item.quantity
+    }, 0),
     [items]
   )
 

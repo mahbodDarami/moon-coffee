@@ -12,6 +12,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      cart_item_options: {
+        Row: {
+          cart_item_id: string
+          id: string
+          option_id: string
+          value: string | null
+        }
+        Insert: {
+          cart_item_id: string
+          id?: string
+          option_id: string
+          value?: string | null
+        }
+        Update: {
+          cart_item_id?: string
+          id?: string
+          option_id?: string
+          value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_item_options_cart_item_id_fkey"
+            columns: ["cart_item_id"]
+            isOneToOne: false
+            referencedRelation: "cart_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_item_options_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "product_options"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart_items: {
         Row: {
           cart_id: string
@@ -238,6 +274,38 @@ export type Database = {
           },
         ]
       }
+      order_item_options: {
+        Row: {
+          id: string
+          option_name: string
+          option_value: string
+          order_item_id: string
+          price_modifier: number
+        }
+        Insert: {
+          id?: string
+          option_name: string
+          option_value: string
+          order_item_id: string
+          price_modifier?: number
+        }
+        Update: {
+          id?: string
+          option_name?: string
+          option_value?: string
+          order_item_id?: string
+          price_modifier?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_item_options_order_item_id_fkey"
+            columns: ["order_item_id"]
+            isOneToOne: false
+            referencedRelation: "order_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           id: string
@@ -325,6 +393,82 @@ export type Database = {
         }
         Relationships: []
       }
+      product_option_groups: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_required: boolean
+          menu_item_id: string | null
+          name: string
+          type: Database["public"]["Enums"]["option_type"]
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_required?: boolean
+          menu_item_id?: string | null
+          name: string
+          type?: Database["public"]["Enums"]["option_type"]
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_required?: boolean
+          menu_item_id?: string | null
+          name?: string
+          type?: Database["public"]["Enums"]["option_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_option_groups_menu_item_id_fkey"
+            columns: ["menu_item_id"]
+            isOneToOne: false
+            referencedRelation: "menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_options: {
+        Row: {
+          created_at: string
+          display_order: number
+          group_id: string
+          id: string
+          is_default: boolean
+          name: string
+          price_modifier: number
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          group_id: string
+          id?: string
+          is_default?: boolean
+          name: string
+          price_modifier?: number
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          group_id?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          price_modifier?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_options_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "product_option_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -403,6 +547,7 @@ export type Database = {
     }
     Enums: {
       chat_role: "user" | "assistant" | "system"
+      option_type: "single_select" | "multi_select" | "text"
       order_status:
         | "pending"
         | "confirmed"
@@ -517,10 +662,28 @@ export type Enums<
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
 export const Constants = {
   public: {
     Enums: {
       chat_role: ["user", "assistant", "system"],
+      option_type: ["single_select", "multi_select", "text"],
       order_status: [
         "pending",
         "confirmed",

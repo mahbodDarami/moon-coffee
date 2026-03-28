@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react'
 import { getCart, updateCartItem, removeFromCart, clearCart } from '@/app/actions/cart'
 import { createOrder } from '@/app/actions/orders'
 import QuantitySelector from '@/app/components/menu/QuantitySelector'
-import type { CartItemWithMenu } from '@/types'
+import type { CartItemWithMenuAndOptions } from '@/types'
 import { useRouter } from 'next/navigation'
 
 const TAX_RATE = 0.09
 
 export default function CartPage() {
   const router = useRouter()
-  const [items, setItems] = useState<CartItemWithMenu[]>([])
+  const [items, setItems] = useState<CartItemWithMenuAndOptions[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [notes, setNotes] = useState('')
@@ -52,7 +52,12 @@ export default function CartPage() {
     }
   }
 
-  const subtotal = items.reduce((s, i) => s + i.menu_items.price * i.quantity, 0)
+  const subtotal = items.reduce((s, i) => {
+    const optMods = (i.cart_item_options || []).reduce(
+      (sum, opt) => sum + (opt.product_options?.price_modifier || 0), 0
+    )
+    return s + (i.menu_items.price + optMods) * i.quantity
+  }, 0)
   const tax = Math.round(subtotal * TAX_RATE)
   const total = subtotal + tax
 
@@ -69,19 +74,34 @@ export default function CartPage() {
       ) : (
         <>
           <div className="cart-list">
-            {items.map((ci) => (
-              <div key={ci.id} className="cart-row">
-                <div className="cart-row-info">
-                  <span className="cart-row-name">{ci.menu_items.name}</span>
-                  <span className="cart-row-price">${(ci.menu_items.price / 100).toFixed(2)} each</span>
+            {items.map((ci) => {
+              const optMods = (ci.cart_item_options || []).reduce(
+                (sum, opt) => sum + (opt.product_options?.price_modifier || 0), 0
+              )
+              const unitPrice = ci.menu_items.price + optMods
+              return (
+                <div key={ci.id} className="cart-row">
+                  <div className="cart-row-info">
+                    <span className="cart-row-name">{ci.menu_items.name}</span>
+                    {ci.cart_item_options?.length > 0 && (
+                      <span className="cart-row-options">
+                        {ci.cart_item_options.map((opt) =>
+                          opt.product_options?.product_option_groups?.type === 'text'
+                            ? null
+                            : opt.product_options?.name
+                        ).filter(Boolean).join(', ')}
+                      </span>
+                    )}
+                    <span className="cart-row-price">${(unitPrice / 100).toFixed(2)} each</span>
+                  </div>
+                  <div className="cart-row-actions">
+                    <QuantitySelector quantity={ci.quantity} onChange={(qty) => handleUpdateQty(ci.id, qty)} />
+                    <span className="cart-row-subtotal">${(unitPrice * ci.quantity / 100).toFixed(2)}</span>
+                    <button className="cart-item-remove" onClick={() => handleRemove(ci.id)}>Remove</button>
+                  </div>
                 </div>
-                <div className="cart-row-actions">
-                  <QuantitySelector quantity={ci.quantity} onChange={(qty) => handleUpdateQty(ci.item_id, qty)} />
-                  <span className="cart-row-subtotal">${(ci.menu_items.price * ci.quantity / 100).toFixed(2)}</span>
-                  <button className="cart-item-remove" onClick={() => handleRemove(ci.item_id)}>Remove</button>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <div className="cart-summary">

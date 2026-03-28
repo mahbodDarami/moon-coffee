@@ -2,6 +2,28 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/videos/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/(login|register|forgot-password)(.*)",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
+    ];
+  },
   turbopack: {
     root: path.resolve(__dirname),
   },

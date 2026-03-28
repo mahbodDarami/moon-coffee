@@ -64,7 +64,7 @@ export default function Nav() {
         <div className="nav-links-group">
           <a href="#quality" className="nav-link">Our Craft</a>
           <a href="#story" className="nav-link">Our Story</a>
-          <button className="nav-link-menu" onClick={openMenu}>Menu</button>
+          <Link href="/menu" className="nav-link-menu">Menu</Link>
         </div>
 
         {/* Right — actions */}
@@ -107,7 +107,7 @@ export default function Nav() {
       <div className={`nav-mobile-menu${mobileOpen ? ' is-open' : ''}`} aria-hidden={!mobileOpen}>
         <a href="#quality" className="nm-link" onClick={closeMobile}>Our Craft</a>
         <a href="#story" className="nm-link" onClick={closeMobile}>Our Story</a>
-        <button className="nm-link" onClick={openMenu}>Menu</button>
+        <Link href="/menu" className="nm-link" onClick={closeMobile}>Menu</Link>
         <div className="nm-divider" />
         {!isLoading && (
           user ? (
