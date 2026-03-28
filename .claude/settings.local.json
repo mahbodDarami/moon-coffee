@@ -145,7 +145,10 @@
       "Bash(powershell -Command \"Start-Sleep 4\")",
       "Bash(powershell -Command \"Start-Sleep 2\")",
       "Bash(powershell -Command \"Start-Sleep 2; \\(Invoke-WebRequest -Uri ''http://localhost:3000/menu'' -UseBasicParsing\\).StatusCode\")",
-      "Bash(powershell -Command \"Start-Sleep 5\")"
+      "Bash(powershell -Command \"Start-Sleep 5\")",
+      "mcp__stitch__create_project",
+      "mcp__stitch__generate_screen_from_text",
+      "mcp__stitch__get_project"
     ]
   },
   "hooks": {
