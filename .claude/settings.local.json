@@ -136,7 +136,13 @@
       "Bash(taskkill /PID 35424 /F)",
       "Bash(cmd /c \"taskkill /PID 35424 /F\")",
       "Bash(echo \"exit: $?\")",
-      "Bash(powershell -Command \"Stop-Process -Id 35424 -Force -ErrorAction SilentlyContinue; Start-Sleep 1; netstat -ano | Select-String '':3000''\")"
+      "Bash(powershell -Command \"Stop-Process -Id 35424 -Force -ErrorAction SilentlyContinue; Start-Sleep 1; netstat -ano | Select-String '':3000''\")",
+      "Bash(ls \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next/app/\\(shop\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\mahbo\\\\Videos\\\\college\\\\arian coop\\\\3Dweb_2\\\\moon-coffee-next/app/\\(shop\\)/menu\")",
+      "mcp__stitch__list_screens",
+      "WebFetch(domain:contribution.usercontent.google.com)",
+      "Bash(powershell -Command \"Start-Sleep 3\")",
+      "Bash(powershell -Command \"Start-Sleep 4\")"
     ]
   },
   "hooks": {
