@@ -142,7 +142,8 @@
       "mcp__stitch__list_screens",
       "WebFetch(domain:contribution.usercontent.google.com)",
       "Bash(powershell -Command \"Start-Sleep 3\")",
-      "Bash(powershell -Command \"Start-Sleep 4\")"
+      "Bash(powershell -Command \"Start-Sleep 4\")",
+      "Bash(powershell -Command \"Start-Sleep 2\")"
     ]
   },
   "hooks": {
