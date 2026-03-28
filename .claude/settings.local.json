@@ -144,7 +144,8 @@
       "Bash(powershell -Command \"Start-Sleep 3\")",
       "Bash(powershell -Command \"Start-Sleep 4\")",
       "Bash(powershell -Command \"Start-Sleep 2\")",
-      "Bash(powershell -Command \"Start-Sleep 2; \\(Invoke-WebRequest -Uri ''http://localhost:3000/menu'' -UseBasicParsing\\).StatusCode\")"
+      "Bash(powershell -Command \"Start-Sleep 2; \\(Invoke-WebRequest -Uri ''http://localhost:3000/menu'' -UseBasicParsing\\).StatusCode\")",
+      "Bash(powershell -Command \"Start-Sleep 5\")"
     ]
   },
   "hooks": {
