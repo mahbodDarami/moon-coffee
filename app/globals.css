@@ -52,6 +52,18 @@ main { background: var(--roast); }
 video, img { display: block; width: 100%; height: 100%; object-fit: cover; }
 a { text-decoration: none; color: inherit; }
 
+/* Full-bleed background videos — explicitly positioned so height:100% resolves
+   correctly on iOS Safari and Android browsers (inset:0 alone is not enough) */
+.hero-bg video,
+.quality-bg video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 /* ============================================
    NAV
    ============================================ */
@@ -240,48 +252,56 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* Sign In — amber neon glow button */
+/* Sign-In — gradient-border capsule (outer = gradient border, inner = dark fill) */
 .nav-signin {
-  --glow-color:        #c8a87a;
-  --glow-spread-color: rgba(200, 168, 122, 0.45);
-  --btn-color:         #1a0e0a;
+  --accent: #c8a87a;
+  --accent-20: rgba(200, 168, 122, 0.2);
+  --accent-50: rgba(200, 168, 122, 0.5);
+  --accent-70: rgba(200, 168, 122, 0.7);
 
-  display: inline-block;
+  width: 115px;
+  height: 42px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(to bottom right, var(--accent) 0%, rgba(200,168,122,0) 30%);
+  background-color: var(--accent-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.nav-signin:hover,
+.nav-signin:focus-visible {
+  background-color: var(--accent-70);
+  box-shadow: 0 0 10px var(--accent-50);
+  outline: none;
+}
+.nav-signin-inner {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 10px;
+  background-color: #1a0e0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
   font-family: var(--sans);
-  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-
-  color: var(--glow-color);
-  background-color: var(--btn-color);
-  border: 0.18em solid var(--glow-color);
-  border-radius: 0.6em;
-  padding: 0.45em 1.1em;
-
-  box-shadow:
-    0 0 0.6em 0.1em var(--glow-color),
-    0 0 2em 0.4em var(--glow-spread-color),
-    inset 0 0 0.5em 0.1em var(--glow-color);
-  text-shadow: 0 0 0.4em var(--glow-color);
-  transition: all 0.3s;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
   white-space: nowrap;
 }
-
-.nav-signin:hover {
-  color: var(--btn-color);
-  background-color: var(--glow-color);
-  box-shadow:
-    0 0 0.8em 0.2em var(--glow-color),
-    0 0 3em 0.8em var(--glow-spread-color),
-    inset 0 0 0.5em 0.1em var(--glow-color);
-  text-shadow: none;
+.nav-signin-inner svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  flex-shrink: 0;
 }
-
-.nav-signin:active {
-  box-shadow:
-    0 0 0.4em 0.15em var(--glow-color),
-    0 0 1.5em 0.6em var(--glow-spread-color),
-    inset 0 0 0.35em 0.1em var(--glow-color);
+.nav-signin-inner p {
+  margin: 0;
+  line-height: 1;
 }
 
 /* Right: actions */
@@ -342,6 +362,51 @@ a { text-decoration: none; color: inherit; }
 /* ============================================
    HERO
    ============================================ */
+
+/* Mobile-only nav menu button — glowing Sign-In style, home page only.
+   Hidden on tablet/desktop via min-width rule (bypasses Lightning CSS dedup). */
+.nav-mobile-menu-btn {
+  --glow-color:        #c8a87a;
+  --glow-spread-color: rgba(200, 168, 122, 0.4);
+  --btn-color:         #1a0e0a;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+
+  color: var(--glow-color);
+  background-color: var(--btn-color);
+  border: 0.15em solid var(--glow-color);
+  border-radius: 0.6em;
+  padding: 0.35em 0.9em;
+
+  box-shadow:
+    0 0 0.5em 0.08em var(--glow-color),
+    0 0 1.4em 0.3em var(--glow-spread-color),
+    inset 0 0 0.4em 0.08em var(--glow-color);
+  text-shadow: 0 0 0.35em var(--glow-color);
+  transition: all 0.3s;
+}
+.nav-mobile-menu-btn:active {
+  color: var(--btn-color);
+  background-color: var(--glow-color);
+  box-shadow:
+    0 0 0.6em 0.15em var(--glow-color),
+    0 0 2em 0.6em var(--glow-spread-color),
+    inset 0 0 0.4em 0.08em var(--glow-color);
+  text-shadow: none;
+}
+@media (min-width: 769px) {
+  .nav-mobile-menu-btn { display: none; }
+}
 
 .hero {
   position: relative;
@@ -1261,18 +1326,58 @@ a { text-decoration: none; color: inherit; }
   margin: 1.2rem 0 1rem;
 }
 
+/* Mobile overlay — Sign In capsule (same gradient-border style, sized for overlay) */
 .nm-signin {
-  font-family: var(--sans);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  padding: 0.5rem 2rem;
-  transition: color 0.2s;
-  text-align: center;
+  --accent: #c8a87a;
+  --accent-20: rgba(200, 168, 122, 0.2);
+  --accent-50: rgba(200, 168, 122, 0.5);
+  --accent-70: rgba(200, 168, 122, 0.7);
+
+  width: 140px;
+  height: 48px;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(to bottom right, var(--accent) 0%, rgba(200,168,122,0) 30%);
+  background-color: var(--accent-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0.6rem 0;
 }
-.nm-signin:hover { color: #fff; }
+.nm-signin:hover,
+.nm-signin:focus-visible {
+  background-color: var(--accent-70);
+  box-shadow: 0 0 10px var(--accent-50);
+  outline: none;
+}
+.nm-signin-inner {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 11px;
+  background-color: #1a0e0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.nm-signin-inner svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+.nm-signin-inner p {
+  margin: 0;
+  line-height: 1;
+}
 
 .nm-btn-order {
   font-family: var(--sans);
@@ -1714,8 +1819,10 @@ a { text-decoration: none; color: inherit; }
   .nav-logo-img         { width: 96px !important; height: 96px !important; }
   .nav-wordmark-moon    { font-size: 2.6rem; }
   .nav-wordmark-coffee  { font-size: 1.75rem; }
-  .nav-link,
-  .nav-signin           { font-size: 0.95rem; }
+  .nav-link             { font-size: 0.95rem; }
+  .nav-signin           { width: 135px; height: 48px; border-radius: 14px; }
+  .nav-signin-inner     { font-size: 0.82rem; border-radius: 12px; gap: 12px; }
+  .nav-signin-inner svg { width: 24px; height: 24px; }
   .nav-btn-order        { font-size: 0.9rem; padding: 0.75rem 1.7rem; }
 
   .hero-eyebrow  { font-size: 0.82rem; }
@@ -1758,7 +1865,9 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 1100px) {
   .nav-links-group { gap: 1.6rem; }
   .nav-actions     { gap: 1rem; }
-  .nav-signin      { font-size: 0.78rem; }
+  .nav-signin           { width: 105px; height: 38px; border-radius: 11px; }
+  .nav-signin-inner     { font-size: 0.68rem; border-radius: 9px; gap: 8px; }
+  .nav-signin-inner svg { width: 18px; height: 18px; }
   .nav-link        { font-size: 0.78rem; }
   .nav-btn-order   { font-size: 0.75rem; padding: 0.55rem 1.1rem; }
 
@@ -1781,39 +1890,29 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 768px) {
   :root { --nav: 68px; }
 
-  /* Nav: collapse to logo + hamburger */
-  .nav               { grid-template-columns: 1fr auto; }
+  /* Nav: collapse to logo + menu-btn + hamburger (3-col) */
+  .nav               { grid-template-columns: auto 1fr auto; }
   .nav-links-group   { display: none; }
   .nav-actions       { display: none; }
-  .nav-hamburger     { display: flex; }
+  .nav-mobile-menu-btn { grid-column: 2; justify-self: center; }
+  .nav-hamburger     { display: flex; grid-column: 3; justify-self: end; }
 
   /* Hero */
   .hero-content      { max-width: 100%; }
   .hero-sub          { max-width: 100%; }
 
+  /* Hero/Quality background videos — show upper portion of landscape video
+     on portrait screens so the subject stays visible, not cropped out */
+  .hero-bg video,
+  .quality-bg video  { object-position: center top; }
+
+  /* Quality — reduce from 100dvh so the landscape video isn't as extreme on
+     portrait mobile; content is still vertically centered inside */
+  .quality           { min-height: 80dvh; }
+
   /* Quality */
   .quality-content   { max-width: 100%; }
   .quality-body      { max-width: 100%; }
-
-  /* Story — stack vertically, video on top */
-  .story-inner       { flex-direction: column; min-height: auto; }
-  .story-right       {
-    flex: none;
-    width: 100%;
-    min-height: 56vw;
-    order: -1;
-    margin-left: 0;
-  }
-  .story-video       {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .story-left        { flex: none; width: 100%; padding: 4rem var(--pad); }
-  .story-pillars     { grid-template-columns: repeat(4, 1fr); }
-  .story-body        { max-width: 100%; }
 
   /* Footer — collapse to 2-col */
   .footer-main       { grid-template-columns: 1fr 1fr; gap: 2.5rem; padding: 4rem var(--pad) 3rem; }
@@ -1821,26 +1920,6 @@ a { text-decoration: none; color: inherit; }
 
   /* Reviews */
   .reviews           { padding: 4rem var(--pad); }
-  .reviews-cards     {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 0 2rem;
-  }
-  .reviews-card-wrap {
-    width: min(340px, 88vw);
-    height: auto;
-    min-height: 230px;
-    margin: 0 !important;
-    transform: none !important;
-    border-radius: 1.2rem;
-  }
-  .reviews-card {
-    position: relative;
-    inset: 0;
-    margin: 10px;
-  }
-  .reviews-card-text { font-size: 0.72rem; -webkit-line-clamp: 6; }
   .reviews-info      { padding: 2rem 1.8rem; }
 }
 
@@ -1848,33 +1927,47 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 480px) {
   :root { --nav: 60px; }
 
-  /* Hero */
-  .hero              { align-items: center; }
-  .hero-content      { padding-bottom: 0; }
+  /* Hero — full viewport so it owns the screen; user scrolls to next section */
+  .hero              { align-items: center; min-height: 100dvh; }
+  /* Top padding clears fixed nav; menu btn sits in that gap */
+  .hero-content      { padding-bottom: 0; padding-top: var(--nav); }
   .hero-scroll-hint  { display: none; }
   .hero-eyebrow      { font-size: 0.62rem; margin-bottom: 1rem; }
   .hero-sub          { font-size: 0.88rem; margin-bottom: 2rem; }
-  .hero-cta          { font-size: 0.68rem; padding: 0.82rem 1.8rem; }
+  .hero-cta          { font-size: 0.55rem; padding: 0.4em 0.95em; border-radius: 0.6em; }
 
-  /* Quality */
+  /* Quality — full viewport, each section fills the screen */
+  .quality           { min-height: 100dvh; }
   .quality-body      { font-size: 0.92rem; line-height: 1.75; }
   .quality-mark      { font-size: 0.78rem; }
 
-  /* Story */
-  .story-right       { min-height: 62vw; }
-  .story-left        { padding: 3rem var(--pad) 3.5rem; }
-  .story-body        { font-size: 0.92rem; line-height: 1.75; }
+  /* Story — stack on mobile only; hide the side video */
+  .story-inner       { flex-direction: column; min-height: auto; }
+  .story-right       { display: none; }
+  .story-left        { flex: none; width: 100%; padding: 3rem var(--pad) 3.5rem; }
+  .story-body        { font-size: 0.92rem; line-height: 1.75; max-width: 100%; }
   .story-pillars     { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
   .story-quote       { font-size: 0.9rem; padding-left: 1.2rem; }
 
-  /* Footer — single column on mobile */
-  .footer-main        { grid-template-columns: 1fr; gap: 2rem; padding: 3rem var(--pad) 2.5rem; }
-  .footer-copy        { font-size: 0.65rem; }
-  .footer-bottom      { flex-direction: column; align-items: flex-start; gap: 0.8rem; padding: 1.2rem var(--pad) 1.8rem; }
-  .footer-marquee-wrap { padding: 0.9rem 0; }
-  /* Reviews */
-  .reviews-card-wrap  { min-height: 210px; }
-  .reviews-card-text  { font-size: 0.7rem; }
+  /* Footer — compact 2-column layout on mobile (detail rules in separate block below) */
+  .footer-main        { grid-template-columns: 1fr 1fr; gap: 1.5rem 1.2rem; padding: 2rem var(--pad) 1.5rem; }
+  .footer-copy        { font-size: 0.55rem; }
+  .footer-bottom      { flex-direction: row; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.85rem var(--pad) 1.2rem; }
+  .footer-marquee-wrap { padding: 0.7rem 0; }
+
+  /* Reviews — 3 cards in one row, taller so full text + footer visible */
+  .reviews-cards       { padding: 1.2rem 0 2rem; }
+  .reviews-card-wrap   { width: 31vw; height: 62vw; margin: 0 clamp(-12px, -3vw, -6px); }
+  .reviews-card        { inset: 6px; padding: 0.65rem 0.6rem 0.55rem; border-radius: 0.55rem; }
+  .reviews-card-icon   { width: 16px; height: 16px; margin-bottom: 0.4rem; border-radius: 4px; }
+  .reviews-card-text   { font-size: 0.46rem; line-height: 1.6; -webkit-line-clamp: unset; overflow: visible; display: block; margin-bottom: 0.4rem; }
+  .reviews-card-footer { padding-top: 0.35rem; }
+  .reviews-card-author { gap: 0.25rem; }
+  .reviews-card-avatar { width: 18px; height: 18px; }
+  .reviews-card-name   { font-size: 0.46rem; }
+  .reviews-card-role   { font-size: 0.36rem; }
+  .reviews-card-stars  { gap: 0.1rem; }
+  .reviews-card-rating { font-size: 0.42rem; }
 }
 
 /* ── Small mobile (≤390px) ──────────────────────────── */
@@ -1883,10 +1976,9 @@ a { text-decoration: none; color: inherit; }
 
   .nav-logo-img      { width: 46px !important; height: 46px !important; }
 
-  .hero-cta          { display: block; text-align: center; padding: 0.85rem 1rem; }
+  .hero-cta          { padding: 0.38em 0.85em; }
   .hero-sub          { font-size: 0.84rem; }
 
-  .story-right       { min-height: 70vw; }
   .story-pillars     { grid-template-columns: repeat(2, 1fr); }
 
   .loading-logo      { font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 0.12em; }
@@ -3814,4 +3906,29 @@ a { text-decoration: none; color: inherit; }
   body:has(.mp) .footer {
     display: none;
   }
+}
+
+/* ============================================
+   MOBILE EXTRAS (≤480px) — split block to avoid
+   Lightning CSS parser limits in large blocks
+   ============================================ */
+@media (max-width: 480px) {
+  /* Footer detail — compact sizes */
+  .footer-logo-img      { width: 36px; height: 36px; margin-bottom: 0.65rem; }
+  .footer-tagline       { font-size: 0.62rem; line-height: 1.65; margin-bottom: 0.9rem; }
+  .footer-socials       { gap: 0.4rem; }
+  .fsoc-expand          { width: 32px; height: 32px; }
+  .footer-col-label     { font-size: 0.55rem; margin-bottom: 0.75rem; }
+  .footer-nav-link      { font-size: 0.68rem; padding: 0.22rem 0; }
+  .footer-hours-row     { padding: 0.22rem 0; }
+  .footer-hours-day     { font-size: 0.6rem; }
+  .footer-hours-time    { font-size: 0.6rem; }
+  .footer-address       { gap: 0; margin-bottom: 0.9rem; }
+  .footer-address-street { font-size: 0.68rem; }
+  .footer-address-area  { font-size: 0.6rem; }
+  .footer-address-city  { font-size: 0.6rem; }
+  .footer-directions    { font-size: 0.6rem; }
+  .footer-dev           { font-size: 0.5rem; }
+
+  /* Reviews card internals — now handled in main ≤480px block above */
 }
