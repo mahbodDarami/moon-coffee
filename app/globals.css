@@ -3938,3 +3938,51 @@ a { text-decoration: none; color: inherit; }
 
   /* Reviews card internals — now handled in main ≤480px block above */
 }
+
+/* ============================================
+   STRIPE CHECKOUT — SUCCESS / CANCEL
+   ============================================ */
+
+.checkout-section-heading {
+  font-family: var(--font-cormorant), serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin: 0 0 1rem;
+  letter-spacing: 0.04em;
+}
+
+.checkout-stripe-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkout-success-icon,
+.checkout-cancel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  margin: 0 auto 1.5rem;
+}
+
+.checkout-success-icon {
+  background: rgba(163, 230, 53, 0.12);
+  color: #a3e635;
+  border: 1px solid rgba(163, 230, 53, 0.25);
+}
+
+.checkout-cancel-icon {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+.checkout-cancel {
+  text-align: center;
+  padding-top: 4rem;
+}
