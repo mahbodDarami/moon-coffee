@@ -148,7 +148,8 @@
       "Bash(powershell -Command \"Start-Sleep 5\")",
       "mcp__stitch__create_project",
       "mcp__stitch__generate_screen_from_text",
-      "mcp__stitch__get_project"
+      "mcp__stitch__get_project",
+      "mcp__236c1f8d-5814-40db-9496-c8ad02ff9782__get_stripe_account_info"
     ]
   },
   "hooks": {
