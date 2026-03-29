@@ -165,8 +165,8 @@ a { text-decoration: none; color: inherit; }
   transform: translateY(-1px);
 }
 
-/* Hide wordmark on small mobile to keep nav clean */
-@media (max-width: 390px) {
+/* Hide wordmark when nav gets crowded */
+@media (max-width: 900px) {
   .nav-wordmark { display: none; }
 }
 
@@ -1192,9 +1192,9 @@ a { text-decoration: none; color: inherit; }
 
 .footer-dev {
   font-family: var(--sans);
-  font-size: 0.58rem;
-  font-weight: 300;
-  color: rgba(255,255,255,0.28);
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.45);
   letter-spacing: 0.04em;
 }
 
@@ -1202,9 +1202,9 @@ a { text-decoration: none; color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: rgba(200,168,122,0.7);
+  color: rgba(200,168,122,0.9);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 0.2s ease;
 }
 
