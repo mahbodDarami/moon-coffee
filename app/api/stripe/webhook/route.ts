@@ -3,11 +3,8 @@ import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-03-31.basil',
+  apiVersion: '2026-03-25.dahlia',
 })
-
-// Disable body parsing — Stripe needs the raw body to verify signature
-export const config = { api: { bodyParser: false } }
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
