@@ -48,7 +48,7 @@ export default function Nav() {
       <nav className={`nav ${scrolled ? 'scrolled' : 'on-hero'}`} id="nav">
 
         {/* Left — logo + wordmark */}
-        <Link href="/" className="nav-logo" onClick={closeMobile}>
+        <Link href="/" className="nav-logo" onClick={(e) => { closeMobile(); if (isHome) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) } }}>
           <Image
             src="/images/logo.png"
             alt="Moon Coffee"

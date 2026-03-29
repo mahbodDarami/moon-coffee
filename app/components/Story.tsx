@@ -136,7 +136,7 @@ export default function Story() {
           </div>
 
           <blockquote className="story-quote js-reveal" ref={quoteRef}>
-            &ldquo;The best cortado in Toronto — every single time.
+            &ldquo;The best cortado in Springfield — every single time.
             That consistency is rare, and it&apos;s why I keep coming back.&rdquo;
             <cite>— Rafaela Moura, food writer</cite>
           </blockquote>

@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Image from 'next/image'
 
 const MARQUEE_TEXT =
-  'SPECIALTY COFFEE · KENSINGTON MARKET · SINCE 1998 · TORONTO ON · MOONBEAN · '
+  'SPECIALTY COFFEE · MOONRISE DISTRICT · SINCE 1998 · SPRINGFIELD OR · MOON COFFEE · '
 
 const NAV_LINKS = [
   { label: 'Our Story',  href: '#story'   },
@@ -143,12 +143,12 @@ export default function Footer() {
             className="footer-logo-img"
           />
           <p className="footer-tagline">
-            Small-batch specialty coffee roasted with care in the heart of Kensington Market since 1998.
+            Small-batch specialty coffee roasted with care in the heart of Moonrise District since 1998.
           </p>
           <div className="footer-socials">
             {/* Instagram — circle → pill */}
             <a
-              href="https://www.instagram.com/moonbeancoffee/"
+              href="https://www.instagram.com/mooncoffee/"
               target="_blank"
               rel="noopener noreferrer"
               className="fsoc-expand fsoc-instagram"
@@ -160,7 +160,7 @@ export default function Footer() {
 
             {/* X — circle → pill */}
             <a
-              href="https://x.com/moonbeancoffee"
+              href="https://x.com/mooncoffee"
               target="_blank"
               rel="noopener noreferrer"
               className="fsoc-expand fsoc-x"
@@ -172,7 +172,7 @@ export default function Footer() {
 
             {/* Facebook — circle → pill */}
             <a
-              href="https://www.facebook.com/moonbeancoffee/"
+              href="https://www.facebook.com/mooncoffee/"
               target="_blank"
               rel="noopener noreferrer"
               className="fsoc-expand fsoc-facebook"
@@ -211,12 +211,12 @@ export default function Footer() {
         <div className="footer-col">
           <p className="footer-col-label">Location</p>
           <address className="footer-address">
-            <span className="footer-address-street">30 St. Andrew Street</span>
-            <span className="footer-address-area">Kensington Market</span>
-            <span className="footer-address-city">Toronto, ON · M5T 1K6</span>
+            <span className="footer-address-street">742 Evergreen Terrace</span>
+            <span className="footer-address-area">Moonrise District</span>
+            <span className="footer-address-city">Springfield, OR · 97403</span>
           </address>
           <a
-            href="https://maps.google.com/?q=Moonbean+Coffee+Company,+30+St+Andrew+St,+Toronto,+ON"
+            href="https://maps.google.com/?q=742+Evergreen+Terrace,+Springfield,+OR+97403"
             target="_blank"
             rel="noopener noreferrer"
             className="footer-directions"
@@ -232,7 +232,7 @@ export default function Footer() {
       <div className="footer-bottom" ref={bottomRef}>
         <div className="footer-bottom-left">
           <span className="footer-copy">
-            © {new Date().getFullYear()} Moon Coffee · Moonbean Coffee Company · All rights reserved
+            © {new Date().getFullYear()} Moon Coffee · All rights reserved
           </span>
           <span className="footer-dev">
             Designed &amp; built by&nbsp;

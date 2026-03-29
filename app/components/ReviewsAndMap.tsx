@@ -179,7 +179,7 @@ export default function ReviewsAndMap() {
             {/* Eyebrow */}
             <p className="reviews-info-eyebrow">
               <PinIcon />
-              Kensington Market, Toronto
+              Moonrise District, Springfield
             </p>
 
             {/* Heading */}
@@ -187,9 +187,9 @@ export default function ReviewsAndMap() {
 
             {/* Address */}
             <address className="reviews-info-address">
-              <span>30 St. Andrew Street</span>
-              <span>Kensington Market</span>
-              <span>Toronto, ON · M5T 1K6</span>
+              <span>742 Evergreen Terrace</span>
+              <span>Moonrise District</span>
+              <span>Springfield, OR · 97403</span>
             </address>
 
             <div className="reviews-info-divider" />
@@ -222,7 +222,7 @@ export default function ReviewsAndMap() {
 
             {/* CTA */}
             <a
-              href="https://maps.google.com/?q=Moonbean+Coffee+Company,+30+St+Andrew+St,+Toronto,+ON"
+              href="https://maps.google.com/?q=742+Evergreen+Terrace,+Springfield,+OR+97403"
               target="_blank"
               rel="noopener noreferrer"
               className="reviews-info-cta"
