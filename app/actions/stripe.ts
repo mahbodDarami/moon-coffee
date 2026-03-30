@@ -63,7 +63,11 @@ export async function createCheckoutSession(
       })
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    // Build a valid absolute base URL for Stripe's success/cancel redirects.
+    // VERCEL_URL is always set automatically by Vercel (no https:// prefix).
+    // NEXT_PUBLIC_SITE_URL is the user-supplied override (must include https://).
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
 
     let session: Stripe.Checkout.Session
     try {
