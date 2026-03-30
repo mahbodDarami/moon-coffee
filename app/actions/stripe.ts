@@ -66,8 +66,8 @@ export async function createCheckoutSession(
     // Build a valid absolute base URL for Stripe's success/cancel redirects.
     // VERCEL_URL is set automatically by Vercel (without https:// prefix).
     // NEXT_PUBLIC_SITE_URL must start with http(s):// to be trusted.
-    const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ''
-    const rawVercelUrl = process.env.VERCEL_URL ?? ''
+    const rawSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? '').trim()
+    const rawVercelUrl = (process.env.VERCEL_URL ?? '').trim()
     const baseUrl = rawSiteUrl.startsWith('http')
       ? rawSiteUrl.replace(/\/$/, '')
       : rawVercelUrl
@@ -87,7 +87,7 @@ export async function createCheckoutSession(
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Stripe session creation failed'
-      return { success: false, error: `Stripe error: ${message} (baseUrl: ${baseUrl})` }
+      return { success: false, error: `Stripe error: ${message}` }
     }
 
     if (!session.url) return { success: false, error: 'Failed to create Stripe session (no URL returned)' }
