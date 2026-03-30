@@ -28,11 +28,16 @@ function CheckoutContent() {
     if (!orderId) return
     setRedirecting(true)
     setError('')
-    const result = await createCheckoutSession(orderId)
-    if (result.success) {
-      window.location.href = result.data
-    } else {
-      setError(result.error)
+    try {
+      const result = await createCheckoutSession(orderId)
+      if (result.success) {
+        window.location.href = result.data
+      } else {
+        setError(result.error)
+        setRedirecting(false)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
       setRedirecting(false)
     }
   }

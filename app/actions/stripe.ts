@@ -11,84 +11,89 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function createCheckoutSession(
   orderId: string
 ): Promise<ActionResult<string>> {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Not authenticated' }
+  try {
+    const supabase = await createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) return { success: false, error: 'Not authenticated' }
 
-  // Load order with items and options
-  const { data: order, error: orderError } = await supabase
-    .from('orders')
-    .select('*, order_items(*, order_item_options(*))')
-    .eq('id', orderId)
-    .eq('user_id', user.id)
-    .single()
+    // Load order with items and options
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .select('*, order_items(*, order_item_options(*))')
+      .eq('id', orderId)
+      .eq('user_id', user.id)
+      .single()
 
-  if (orderError || !order) return { success: false, error: 'Order not found' }
-  if (order.payment_status === 'paid') return { success: false, error: 'Order already paid' }
+    if (orderError || !order) return { success: false, error: `Order not found: ${orderError?.message ?? 'unknown'}` }
+    if (order.payment_status === 'paid') return { success: false, error: 'Order already paid' }
 
-  // Build Stripe line items from order items
-  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = order.order_items.map(
-    (item: { item_name: string; item_price: number; quantity: number; order_item_options: { option_value: string; price_modifier: number }[] }) => {
-      const optionLabels = item.order_item_options
-        .filter((o) => o.price_modifier !== 0 || o.option_value)
-        .map((o) => o.option_value)
-        .join(', ')
+    // Build Stripe line items from order items
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = (order.order_items ?? []).map(
+      (item: { item_name: string; item_price: number; quantity: number; order_item_options: { option_value: string; price_modifier: number }[] }) => {
+        const optionLabels = (item.order_item_options ?? [])
+          .filter((o) => o.price_modifier !== 0 || o.option_value)
+          .map((o) => o.option_value)
+          .join(', ')
 
-      return {
+        return {
+          price_data: {
+            currency: 'cad',
+            unit_amount: item.item_price,
+            product_data: {
+              name: item.item_name,
+              ...(optionLabels ? { description: optionLabels } : {}),
+            },
+          },
+          quantity: item.quantity,
+        }
+      }
+    )
+
+    // Add tax as a separate line item to match our stored total
+    if (order.tax > 0) {
+      lineItems.push({
         price_data: {
           currency: 'cad',
-          unit_amount: item.item_price,
-          product_data: {
-            name: item.item_name,
-            ...(optionLabels ? { description: optionLabels } : {}),
-          },
+          unit_amount: order.tax,
+          product_data: { name: 'Tax (9%)' },
         },
-        quantity: item.quantity,
-      }
+        quantity: 1,
+      })
     }
-  )
 
-  // Add tax as a separate line item to match our stored total
-  if (order.tax > 0) {
-    lineItems.push({
-      price_data: {
-        currency: 'cad',
-        unit_amount: order.tax,
-        product_data: { name: 'Tax (9%)' },
-      },
-      quantity: 1,
-    })
-  }
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    let session: Stripe.Checkout.Session
+    try {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: lineItems,
+        metadata: { orderId },
+        customer_email: user.email,
+        success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/checkout/cancel?orderId=${orderId}`,
+      })
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Stripe session creation failed'
+      return { success: false, error: `Stripe error: ${message}` }
+    }
 
-  let session: Stripe.Checkout.Session
-  try {
-    session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: lineItems,
-      metadata: { orderId },
-      customer_email: user.email,
-      success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/checkout/cancel?orderId=${orderId}`,
-    })
+    if (!session.url) return { success: false, error: 'Failed to create Stripe session (no URL returned)' }
+
+    // Store stripe_session_id on the order for webhook lookup
+    await supabase
+      .from('orders')
+      .update({ stripe_session_id: session.id })
+      .eq('id', orderId)
+
+    return { success: true, data: session.url }
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Stripe error'
-    return { success: false, error: message }
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    return { success: false, error: `Checkout error: ${message}` }
   }
-
-  if (!session.url) return { success: false, error: 'Failed to create Stripe session' }
-
-  // Store stripe_session_id on the order for webhook lookup
-  await supabase
-    .from('orders')
-    .update({ stripe_session_id: session.id })
-    .eq('id', orderId)
-
-  return { success: true, data: session.url }
 }
 
 // Called from the success page — verifies payment with Stripe directly
