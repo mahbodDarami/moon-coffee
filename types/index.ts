@@ -13,6 +13,7 @@ export type OrderItemOption = Tables<'order_item_options'>
 export type UserPreferences = Tables<'user_preferences'>
 export type ProductOptionGroup = Tables<'product_option_groups'>
 export type ProductOption = Tables<'product_options'>
+export type Address = Tables<'addresses'>
 
 // Composite types for joined queries
 export type MenuItemWithCategory = MenuItem & {
@@ -57,6 +58,11 @@ export type OrderWithItems = Order & {
 
 export type OrderWithItemsAndOptions = Order & {
   order_items: OrderItemWithOptions[]
+}
+
+export type OrderWithItemsAndAddress = Order & {
+  order_items: OrderItemWithOptions[]
+  addresses: Address | null
 }
 
 // Guest cart (localStorage)

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getProfile, updateProfile } from '@/app/actions/profile'
 import { useAuth } from '@/app/components/auth/AuthProvider'
+import AddressList from '@/app/components/address/AddressList'
 import type { Profile } from '@/types'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -215,7 +216,7 @@ export default function AccountPage() {
 
         {/* ── Address Book ── */}
         <SectionCard title="Address Book">
-          <ComingSoon label="Saved delivery addresses" />
+          <AddressList />
         </SectionCard>
 
         {/* ── Billing ── */}

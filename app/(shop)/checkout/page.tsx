@@ -2,8 +2,9 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { getOrder } from '@/app/actions/orders'
+import { getOrder, updateOrderAddress } from '@/app/actions/orders'
 import { createCheckoutSession } from '@/app/actions/stripe'
+import AddressSelector from '@/app/components/address/AddressSelector'
 import type { OrderWithItemsAndOptions } from '@/types'
 
 function CheckoutContent() {
@@ -12,6 +13,7 @@ function CheckoutContent() {
   const [order, setOrder] = useState<OrderWithItemsAndOptions | null>(null)
   const [loading, setLoading] = useState(true)
   const [redirecting, setRedirecting] = useState(false)
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -29,6 +31,10 @@ function CheckoutContent() {
     setRedirecting(true)
     setError('')
     try {
+      // Attach selected address to the order
+      if (selectedAddressId) {
+        await updateOrderAddress(orderId, selectedAddressId)
+      }
       const result = await createCheckoutSession(orderId)
       if (result.success) {
         window.location.href = result.data
@@ -70,6 +76,11 @@ function CheckoutContent() {
           <div className="cart-total-row"><span>Tax (9%)</span><span>${(order.tax / 100).toFixed(2)}</span></div>
           <div className="cart-total-row cart-total-final"><span>Total</span><span>${(order.total / 100).toFixed(2)}</span></div>
         </div>
+      </div>
+
+      <div className="checkout-payment">
+        <h2 className="checkout-section-heading">Delivery Address</h2>
+        <AddressSelector value={selectedAddressId} onChange={setSelectedAddressId} />
       </div>
 
       <div className="checkout-payment">

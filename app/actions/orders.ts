@@ -119,6 +119,21 @@ export async function createOrder(notes?: string): Promise<ActionResult<string>>
   return { success: true, data: order.id }
 }
 
+export async function updateOrderAddress(orderId: string, addressId: string | null): Promise<ActionResult<void>> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { success: false, error: 'Not authenticated' }
+
+  const { error } = await supabase
+    .from('orders')
+    .update({ delivery_address_id: addressId })
+    .eq('id', orderId)
+    .eq('user_id', user.id)
+
+  if (error) return { success: false, error: error.message }
+  return { success: true, data: undefined }
+}
+
 export async function getOrders(): Promise<ActionResult<OrderWithItems[]>> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()

@@ -3979,3 +3979,336 @@ a { text-decoration: none; color: inherit; }
   text-align: center;
   padding-top: 4rem;
 }
+
+/* ============================================================
+   === ADDRESS SYSTEM (Phase 6) ===
+   .addr-*  — address form, list, cards, selector
+   ============================================================ */
+
+/* ── Spinner ───────────────────────────────────────────────── */
+.addr-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(255,255,255,0.12);
+  border-top-color: rgba(255,255,255,0.65);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Form ──────────────────────────────────────────────────── */
+.addr-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.addr-form-wrap {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0.75rem;
+}
+
+.addr-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.addr-required {
+  color: rgba(var(--amber-rgb, 245, 158, 11), 0.7);
+}
+
+.addr-input {
+  display: block;
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.88);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.addr-input:focus {
+  border-color: rgba(245,158,11,0.5);
+}
+
+.addr-input::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+
+.addr-autocomplete-input {
+  /* Google's pac-container dropdown needs a non-transparent background */
+}
+
+.addr-row {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.addr-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.addr-btn-cancel {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0.45rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.addr-btn-cancel:hover {
+  border-color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.75);
+}
+
+.addr-btn-save {
+  background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.35);
+  border-radius: 0.45rem;
+  padding: 0.5rem 1.2rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(245,158,11,0.9);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.addr-btn-save:hover {
+  background: rgba(245,158,11,0.22);
+  border-color: rgba(245,158,11,0.55);
+}
+
+.addr-btn-save:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ── Address List ──────────────────────────────────────────── */
+.addr-list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.addr-empty {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.28);
+  font-style: italic;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+
+.addr-card {
+  position: relative;
+  padding: 0.9rem 1rem;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0.65rem;
+  transition: border-color 0.2s;
+}
+
+.addr-card--default {
+  border-color: rgba(245,158,11,0.25);
+}
+
+.addr-default-badge {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(245,158,11,0.85);
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 3rem;
+  padding: 0.18rem 0.55rem;
+  margin-bottom: 0.35rem;
+}
+
+.addr-card-label {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 0.2rem;
+}
+
+.addr-card-line {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+}
+
+.addr-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.addr-action-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.addr-action-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.75);
+}
+
+.addr-action-btn--delete {
+  color: rgba(239,68,68,0.55);
+  border-color: rgba(239,68,68,0.15);
+}
+
+.addr-action-btn--delete:hover {
+  color: rgba(239,68,68,0.85);
+  border-color: rgba(239,68,68,0.35);
+}
+
+.addr-add-btn {
+  align-self: flex-start;
+  background: none;
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 0.45rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.38);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  margin-top: 0.25rem;
+}
+
+.addr-add-btn:hover {
+  border-color: rgba(245,158,11,0.4);
+  color: rgba(245,158,11,0.75);
+}
+
+/* ── Address Selector (checkout) ───────────────────────────── */
+.addr-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.addr-sel-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0.65rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(255,255,255,0.02);
+}
+
+.addr-sel-option--active {
+  border-color: rgba(245,158,11,0.35);
+  background: rgba(245,158,11,0.05);
+}
+
+.addr-sel-radio {
+  margin-top: 0.2rem;
+  accent-color: #f59e0b;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.addr-sel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.addr-sel-label {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+}
+
+.addr-sel-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.5;
+}
+
+/* ── Google pac-container override ────────────────────────── */
+.pac-container {
+  background: #1e1410;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0.5rem;
+  font-family: var(--sans);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  margin-top: 2px;
+}
+
+.pac-item {
+  padding: 0.55rem 0.9rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.pac-item:first-child { border-top: none; }
+
+.pac-item:hover,
+.pac-item-selected {
+  background: rgba(245,158,11,0.1);
+  color: rgba(255,255,255,0.9);
+}
+
+.pac-item-query {
+  color: rgba(255,255,255,0.88);
+  font-size: 0.82rem;
+}
+
+.pac-icon { display: none; }
+
+.pac-logo::after { display: none; }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .addr-row {
+    flex-direction: column;
+  }
+}

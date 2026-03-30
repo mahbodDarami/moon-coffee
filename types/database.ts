@@ -12,6 +12,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          id: string
+          user_id: string
+          label: string
+          street_address: string
+          apartment: string | null
+          city: string
+          state: string
+          postal_code: string
+          country: string
+          lat: number | null
+          lng: number | null
+          place_id: string | null
+          is_default: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          label?: string
+          street_address: string
+          apartment?: string | null
+          city: string
+          state: string
+          postal_code: string
+          country?: string
+          lat?: number | null
+          lng?: number | null
+          place_id?: string | null
+          is_default?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          label?: string
+          street_address?: string
+          apartment?: string | null
+          city?: string
+          state?: string
+          postal_code?: string
+          country?: string
+          lat?: number | null
+          lng?: number | null
+          place_id?: string | null
+          is_default?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cart_item_options: {
         Row: {
           cart_item_id: string
@@ -354,6 +408,7 @@ export type Database = {
       orders: {
         Row: {
           created_at: string
+          delivery_address_id: string | null
           id: string
           notes: string | null
           payment_method: string | null
@@ -368,6 +423,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          delivery_address_id?: string | null
           id?: string
           notes?: string | null
           payment_method?: string | null
@@ -382,6 +438,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          delivery_address_id?: string | null
           id?: string
           notes?: string | null
           payment_method?: string | null
@@ -394,7 +451,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "orders_delivery_address_id_fkey"
+            columns: ["delivery_address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       product_option_groups: {
         Row: {
