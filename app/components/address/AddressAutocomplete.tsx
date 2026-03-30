@@ -1,55 +1,53 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { initGoogleMaps, importLibrary, parsePlace, type ParsedAddress } from '@/lib/google-places'
 
 interface Props {
   onSelect: (parsed: ParsedAddress) => void
-  placeholder?: string
   className?: string
 }
 
-export default function AddressAutocomplete({ onSelect, placeholder = 'Start typing your address…', className }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [ready, setReady] = useState(false)
+export default function AddressAutocomplete({ onSelect, className }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null)
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
 
   useEffect(() => {
-    let autocomplete: google.maps.places.Autocomplete | null = null
+    let mounted = true
+    let el: google.maps.places.PlaceAutocompleteElement | null = null
 
     async function init() {
-      if (!inputRef.current) return
+      if (!containerRef.current) return
       initGoogleMaps()
       await importLibrary('places')
-      autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-        types: ['address'],
-        fields: ['address_components', 'geometry', 'place_id'],
-      })
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete!.getPlace()
-        if (place?.address_components) {
+
+      if (!mounted || !containerRef.current) return
+
+      // Access via global namespace — PlaceAutocompleteElement is not in PlacesLibrary type
+      el = new google.maps.places.PlaceAutocompleteElement({ types: ['address'] })
+      containerRef.current.appendChild(el)
+
+      el.addEventListener('gmp-placeselect', async (event: Event) => {
+        const place = (event as google.maps.places.PlaceAutocompletePlaceSelectEvent).place
+        try {
+          await place.fetchFields({ fields: ['addressComponents', 'location', 'id'] })
           onSelectRef.current(parsePlace(place))
+        } catch {
+          // place fetch failed — user can fill fields manually
         }
       })
-      setReady(true)
     }
 
     init()
 
     return () => {
-      if (autocomplete) google.maps.event.clearInstanceListeners(autocomplete)
+      mounted = false
+      if (el && containerRef.current?.contains(el)) {
+        containerRef.current.removeChild(el)
+      }
     }
-  }, []) // no deps — init once, use ref for onSelect
+  }, [])
 
-  return (
-    <input
-      ref={inputRef}
-      type="text"
-      className={className ?? 'addr-autocomplete-input'}
-      placeholder={placeholder}
-      disabled={!ready && !process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-      autoComplete="off"
-    />
-  )
+  return <div ref={containerRef} className={className ?? 'addr-pac-wrap'} />
 }

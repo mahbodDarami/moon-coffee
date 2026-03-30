@@ -25,10 +25,10 @@ export function initGoogleMaps(): void {
   initialized = true
 }
 
-export function parsePlace(place: google.maps.places.PlaceResult): ParsedAddress {
+export function parsePlace(place: google.maps.places.Place): ParsedAddress {
   const get = (type: string, short = false) => {
-    const comp = place.address_components?.find((c) => c.types.includes(type))
-    return comp ? (short ? comp.short_name : comp.long_name) : ''
+    const comp = place.addressComponents?.find((c) => c.types.includes(type))
+    return comp ? (short ? (comp.shortText ?? '') : (comp.longText ?? '')) : ''
   }
 
   const streetNumber = get('street_number')
@@ -42,8 +42,8 @@ export function parsePlace(place: google.maps.places.PlaceResult): ParsedAddress
     state: get('administrative_area_level_1', true),
     postal_code: get('postal_code'),
     country: get('country', true),
-    lat: place.geometry?.location?.lat() ?? null,
-    lng: place.geometry?.location?.lng() ?? null,
-    place_id: place.place_id ?? '',
+    lat: place.location?.lat() ?? null,
+    lng: place.location?.lng() ?? null,
+    place_id: place.id ?? '',
   }
 }

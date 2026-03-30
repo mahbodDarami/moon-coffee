@@ -4051,8 +4051,22 @@ a { text-decoration: none; color: inherit; }
   color: rgba(255,255,255,0.2);
 }
 
-.addr-autocomplete-input {
-  /* Google's pac-container dropdown needs a non-transparent background */
+.addr-pac-wrap {
+  width: 100%;
+}
+
+/* PlaceAutocompleteElement web component theming */
+.addr-pac-wrap gmp-placeautocomplete,
+gmp-placeautocomplete {
+  width: 100%;
+  --gmp-mat-color-surface: #1e1410;
+  --gmp-mat-color-on-surface: rgba(255,255,255,0.88);
+  --gmp-mat-color-surface-container-high: #2a1c16;
+  --gmp-mat-color-outline: rgba(255,255,255,0.10);
+  --gmp-mat-color-primary: #c8a87a;
+  --gmp-mat-font-body-medium-font: var(--sans);
+  --gmp-mat-shape-corner-medium: 0.5rem;
+  --gmp-mat-shape-corner-extra-small: 0.5rem;
 }
 
 .addr-row {
@@ -4271,40 +4285,8 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.5;
 }
 
-/* ── Google pac-container override ────────────────────────── */
-.pac-container {
-  background: #1e1410;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 0.5rem;
-  font-family: var(--sans);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  margin-top: 2px;
-}
-
-.pac-item {
-  padding: 0.55rem 0.9rem;
-  color: rgba(255,255,255,0.65);
-  font-size: 0.8rem;
-  cursor: pointer;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.pac-item:first-child { border-top: none; }
-
-.pac-item:hover,
-.pac-item-selected {
-  background: rgba(245,158,11,0.1);
-  color: rgba(255,255,255,0.9);
-}
-
-.pac-item-query {
-  color: rgba(255,255,255,0.88);
-  font-size: 0.82rem;
-}
-
-.pac-icon { display: none; }
-
-.pac-logo::after { display: none; }
+/* ── PlaceAutocompleteElement theming ──────────────────────── */
+/* (gmp-placeautocomplete uses shadow DOM — CSS vars above control colors) */
 
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 480px) {

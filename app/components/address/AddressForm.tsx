@@ -93,12 +93,8 @@ export default function AddressForm({ initial, onSubmit, onCancel, submitLabel =
       </label>
 
       <label className="addr-label">
-        Address <span className="addr-required">*</span>
-        <AddressAutocomplete
-          className="addr-input addr-autocomplete-input"
-          onSelect={handleAutocomplete}
-          placeholder="Start typing your address…"
-        />
+        Address
+        <AddressAutocomplete onSelect={handleAutocomplete} />
       </label>
 
       <label className="addr-label">
