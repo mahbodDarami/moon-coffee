@@ -553,15 +553,9 @@ a { text-decoration: none; color: inherit; }
 /* Wave transition — disabled (replaced by slash) */
 .st-wave { display: none; }
 
-/* Section transition slash — animated expanding line between sections */
+/* Section transition slash — hidden */
 .st-slash {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(200,168,122,0.35) 20%, rgba(200,168,122,0.5) 50%, rgba(200,168,122,0.35) 80%, transparent);
-  margin: 0 auto;
-  transform-origin: left center;
-  will-change: transform;
+  display: none;
 }
 
 /* ============================================
@@ -585,7 +579,6 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   background: var(--roast);
   overflow: hidden;
-  margin-bottom: 16px;
 }
 
 .quality-bg {
