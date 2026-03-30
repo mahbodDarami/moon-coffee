@@ -1,4 +1,4 @@
-import { Loader, importLibrary } from '@googlemaps/js-api-loader'
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 export { importLibrary }
 
@@ -14,17 +14,15 @@ export type ParsedAddress = {
   place_id: string
 }
 
-let loaderInstance: Loader | null = null
+let initialized = false
 
-export function getLoader(): Loader {
-  if (!loaderInstance) {
-    loaderInstance = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
-      version: 'weekly',
-      libraries: ['places'],
-    })
-  }
-  return loaderInstance
+export function initGoogleMaps(): void {
+  if (initialized) return
+  setOptions({
+    key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
+    v: 'weekly',
+  })
+  initialized = true
 }
 
 export function parsePlace(place: google.maps.places.PlaceResult): ParsedAddress {
