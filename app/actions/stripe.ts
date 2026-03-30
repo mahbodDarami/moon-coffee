@@ -64,15 +64,21 @@ export async function createCheckoutSession(
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    mode: 'payment',
-    line_items: lineItems,
-    metadata: { orderId },
-    customer_email: user.email,
-    success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${baseUrl}/checkout/cancel?orderId=${orderId}`,
-  })
+  let session: Stripe.Checkout.Session
+  try {
+    session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: lineItems,
+      metadata: { orderId },
+      customer_email: user.email,
+      success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/checkout/cancel?orderId=${orderId}`,
+    })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Stripe error'
+    return { success: false, error: message }
+  }
 
   if (!session.url) return { success: false, error: 'Failed to create Stripe session' }
 
